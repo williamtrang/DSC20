@@ -1,7 +1,7 @@
 """
 DSC 20 Homework 02
-Name: TODO
-PID: TODO
+Name: William Trang
+PID: A16679845
 """
 
 # Question 1
@@ -20,10 +20,38 @@ def playlist_password(playlist_name, limit):
     'orb4s4awns'
 
     # Add at least 3 doctests below here #
-
+    >>> playlist_password('',  7)
+    ''
+    >>> playlist_password('HAP"P%Y N#EW Y"EA!!R!L!', 10)
+    'EYwA4PPYNE'
+    >>> playlist_password()
     """
-    # YOUR CODE GOES HERE #
-    return
+    password = ''
+    vowel_list = ['a' , 'e', 'i', 'o', 'u']
+    lower_list = ['d', 'w', 'k']
+
+    if len(playlist_name) == 0:
+        return ''
+    
+    for i in playlist_name:
+        if len(password) >= limit:
+            return password
+
+        if not i.isalnum():
+            continue
+
+        if i.lower() in vowel_list:
+            password = (password + i)[::-1]
+        elif i.lower() in lower_list:
+            password += i.lower()
+        elif i.upper() == 'L':
+            password += '7'
+        elif i.upper() == 'H':
+            password += '4'
+        else:
+            password += i
+
+    return password
 
 # Question 2
 def cookable_recipes(ings, recipes):
