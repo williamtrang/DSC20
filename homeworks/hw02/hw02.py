@@ -24,10 +24,12 @@ def playlist_password(playlist_name, limit):
     ''
     >>> playlist_password('HAP"P%Y N#EW Y"EA!!R!L!', 10)
     'EYwA4PPYNE'
+    >>> playlist_password('hppy nw yr', 20)
+    '4ppynwyr'
     >>> playlist_password()
     """
     password = ''
-    vowel_list = ['a' , 'e', 'i', 'o', 'u']
+    vowel_list = ['a', 'e', 'i', 'o', 'u']
     lower_list = ['d', 'w', 'k']
 
     if len(playlist_name) == 0:
@@ -71,10 +73,22 @@ def cookable_recipes(ings, recipes):
     []
 
     # Add at least 3 doctests below here #
-
+    >>> cookable_recipes(['eggs', 'beef', 'flour'], {'Egg Noodle': \
+['egg', 'flour'], 'Beef Noodle': ['eggs', 'beef', 'flour'], \
+'Beef Wrap': ['flour', 'beef']})
+    ['Beef Noodle', 'Beef Wrap']
     """
-    # YOUR CODE GOES HERE #
-    return
+    possible_recipes = []
+    i = 0
+    for keys, values in recipes.items():
+        for j in ings:
+            if j in values:
+                i += 1
+            if i == len(values):
+                possible_recipes.append(keys)
+                break
+        i = 0
+    return possible_recipes
 
 # Question 3
 # Part 1
