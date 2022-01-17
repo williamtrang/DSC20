@@ -189,8 +189,23 @@ def channel_stats(videos_stats):
 
     # Add at least 3 doctests below here #
     """
-    # YOUR CODE GOES HERE #
-    return
+    total_likes = 0
+    total_dislikes = 0
+    total_comments = 0
+    total_views = 0
+
+    likes_index = 0
+    dislikes_index = 1
+    comments_index = 2
+    views_index = 3
+
+    for i in range(0, len(videos_stats)):
+        total_likes += videos_stats[i][likes_index]
+        total_dislikes += videos_stats[i][dislikes_index]
+        total_comments += videos_stats[i][comments_index]
+        total_views += videos_stats[i][views_index]
+    return [('likes', total_likes), ('dislikes', total_dislikes), 
+        ('comments', total_comments), ('views', total_views)]
 
 # Question 5
 # Part 1
