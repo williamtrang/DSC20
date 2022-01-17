@@ -107,10 +107,28 @@ def process_purchase(purchase):
     {'ralphs': ['milk', 'carrot', 'milk'], 'costco': ['carrot']}
 
     # Add at least 3 doctests below here #
-
+    >>> process_purchase([])
+    {}
+    >>> process_purchase([('rice', 'mitsuwa'), ('eggs', 'mitsuwa'), \
+('rice', 'mitsuwa'), ('rice', 'costco')])
+    {'mitsuwa': ['rice', 'eggs', 'rice'], 'costco': ['rice']}
     """
-    # YOUR CODE GOES HERE #
-    return
+    if len(purchase) == 0:
+        return {}
+
+    purchase_dict = {}
+    store_names = []
+    items_purchased = []
+
+    for i in range(0, len(purchase)):
+        store_names.append(purchase[i][1])
+        purchase_dict[store_names[i]] = []
+
+    for i in range(0, len(purchase)):
+        items_purchased.append(purchase[i][0])
+        purchase_dict[store_names[i]].append(items_purchased[i])
+
+    return purchase_dict
 
 # Part 2
 def grocery_summary(grocery_purchases):
@@ -131,10 +149,27 @@ def grocery_summary(grocery_purchases):
     {'ralphs': ['milk', 'carrot'], 'costco': ['carrot']}
 
     # Add at least 3 doctests below here #
-
+    >>> grocery_summary([{}])
+    {}
     """
-    # YOUR CODE GOES HERE #
-    return
+    if len(grocery_purchases) == 0:
+        return {}
+
+    combined_keys = []
+    combined_dict = {}
+    for i in range(0, len(grocery_purchases)):
+        for keys in grocery_purchases[i].keys():
+            combined_keys.append(keys)
+    
+    for i in range(0, len(combined_keys)):
+        combined_dict[combined_keys[i]] = []
+
+    for i in range(0, len(grocery_purchases)):
+        for keys, values in grocery_purchases[i].items():
+            for i in range(0, len(values)):
+                if values[i] not in combined_dict[keys]:
+                    combined_dict[keys].append(values[i])         
+    return combined_dict
 
 # Question 4
 def channel_stats(videos_stats):
