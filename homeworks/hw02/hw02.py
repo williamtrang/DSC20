@@ -7,10 +7,10 @@ PID: A16679845
 # Question 1
 def playlist_password(playlist_name, limit):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a string representing playlist name
+    # and an integer character limit. Generates and 
+    # returns a string by defined rules that has a 
+    # length less than or equal to the character limit.
 
     >>> playlist_password("World's Best Lasagne", 10)
     'eBsd7rwost'
@@ -26,7 +26,12 @@ def playlist_password(playlist_name, limit):
     'EYwA4PPYNE'
     >>> playlist_password('hppy nw yr', 20)
     '4ppynwyr'
-    >>> playlist_password()
+    >>> playlist_password('brEkf', 10)
+    'Erbkf'
+    >>> playlist_password('a', 20)
+    'a'
+    >>> playlist_password('aEiOuDWIK,,Lh', 20)
+    'IwdOEaiuk74'
     """
     password = ''
     vowel_list = ['a', 'e', 'i', 'o', 'u']
@@ -52,16 +57,15 @@ def playlist_password(playlist_name, limit):
             password += '4'
         else:
             password += i
-
     return password
 
 # Question 2
 def cookable_recipes(ings, recipes):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a list of ingredients and a dictionary
+    # of recipes. Returns the recipes that are able to be
+    # made. A recipe can be made if all the components
+    # are in the ingredients list.
 
     >>> rec = {'Egg Fried Rice': ['egg', 'rice', 'msg'], \
 'Spaghetti': ['noodle', 'tomato sauce'], 'Steamed Rice': ['rice']}
@@ -77,6 +81,9 @@ def cookable_recipes(ings, recipes):
 ['egg', 'flour'], 'Beef Noodle': ['eggs', 'beef', 'flour'], \
 'Beef Wrap': ['flour', 'beef']})
     ['Beef Noodle', 'Beef Wrap']
+    >>> cookable_recipes([], {})
+    []
+    >>> cookable_recipes([])
     """
     possible_recipes = []
     i = 0
@@ -94,10 +101,9 @@ def cookable_recipes(ings, recipes):
 # Part 1
 def process_purchase(purchase):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a list of tuples with two elements. Puts the 
+    # elements into dictionary by second element with 
+    # values being the first element and returns.
 
     >>> process_purchase([('rice', 'mitsuwa'), ('msg', '99ranch'), \
 ('eggs', 'costco')])
@@ -112,6 +118,8 @@ def process_purchase(purchase):
     >>> process_purchase([('rice', 'mitsuwa'), ('eggs', 'mitsuwa'), \
 ('rice', 'mitsuwa'), ('rice', 'costco')])
     {'mitsuwa': ['rice', 'eggs', 'rice'], 'costco': ['rice']}
+    >>> process_purchase([('rice', 'costco'), ('eggs', 'mitsuwa')])
+    {'costco': ['rice'], 'mitsuwa': ['eggs']}
     """
     if len(purchase) == 0:
         return {}
@@ -133,10 +141,10 @@ def process_purchase(purchase):
 # Part 2
 def grocery_summary(grocery_purchases):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a list of dictionaries sorted as store as 
+    # keys and items bought as values. Congregates the
+    # items bought between the dictionaries and returns
+    # the combined dictionary.
 
     >>> p1 = [{'mitsuwa': ['rice'], '99ranch': ['msg']}, \
 {'99ranch': ['sambal', 'banana leaf'], 'costco': ['eggs']}]
@@ -151,6 +159,8 @@ def grocery_summary(grocery_purchases):
     # Add at least 3 doctests below here #
     >>> grocery_summary([{}])
     {}
+    >>> grocery_summary([{'vons': ['egg', 'egg', 'egg']}])
+    {'vons': ['egg']}
     """
     if len(grocery_purchases) == 0:
         return {}
@@ -174,10 +184,9 @@ def grocery_summary(grocery_purchases):
 # Question 4
 def channel_stats(videos_stats):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a list of lists with 4 elements each. Adds up
+    # the values with the same index and returns all the
+    # summed values.
 
     >>> channel_stats ([[123, 231, 82, 430], [340, 158, 225, 647]])
     [('likes', 463), ('dislikes', 389), ('comments', 307), ('views', 1077)]
@@ -188,6 +197,8 @@ def channel_stats(videos_stats):
     [('likes', 2064), ('dislikes', 627), ('comments', 652), ('views', 4765)]
 
     # Add at least 3 doctests below here #
+    >>> channel_stats([[0, 0, 0, 0], [0, 0, 0, 0]])
+    [('likes', 0), ('dislikes', 0), ('comments', 0), ('views', 0)]
     """
     total_likes = 0
     total_dislikes = 0
@@ -211,10 +222,9 @@ def channel_stats(videos_stats):
 # Part 1
 def parse_file(filepath):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a file pathway. Reads the designated file with specific
+    # formatting for watch time stats and returns a dictionary
+    # with the username, user ID, and their video watch times.
 
     >>> parse_file('files/viewer1.txt')
     {('marina', 1): [15, 10], ('elvy', 2): [8]}
@@ -224,18 +234,32 @@ def parse_file(filepath):
     {}
 
     # Add at least 3 doctests below here #
-
+    >>> parse_file('files/viewer3.txt')
+    {('will', 7): [10, 9, 0]}
     """
-    # YOUR CODE GOES HERE #
-    return
+    viewer_data = ''
+    analytics = {}
+    with open(filepath, 'r') as f:
+        for line in f:
+            viewer_data = line.split(',')
+
+            username = viewer_data[0]
+            user_id = int(viewer_data[1])
+            view_start = int(viewer_data[2])
+            view_end = int(viewer_data[3])
+
+            if (username, user_id) not in analytics:
+                analytics[(username, user_id)] = []
+            analytics[(username, user_id)].append(view_end - view_start)
+    return analytics
 
 # Part 2
 def long_views(filepath, threshold):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a file pathway and a threshold for watch time.
+    # Read the file and determine whether the watch time
+    # reached the threshold (watchtime = view_end - view_start).
+    # Return the user ID and whether or not the watch time was met.
 
     >>> long_views('files/viewer1.txt', 10)
     >>> with open('files/viewer1_modified.txt', 'r') as outfile1:
@@ -255,11 +279,34 @@ def long_views(filepath, threshold):
     4,No
 
     # Add at least 3 doctests below here #
-
+    >>> long_views('files/viewer3.txt', 10)
+    >>> with open('files/viewer3_modified.txt', 'r') as outfile3:
+    ...     print(outfile3.read().strip())
+    7,Yes
+    7,No
+    7,No
+    >>> long_views('files/empty.txt', 40)
+    >>> with open('files/empty_modified.txt', 'r') as outfile4:
+    ...     print(outfile4.read().strip())
+    <BLANKLINE>
     """
-    # YOUR CODE GOES HERE #
-    return
+    new_filepath = filepath.split('.')[0] + '_modified.txt'
+    viewer_data = ''
+    watched_enough = ''
+    bool_yes_no = {'False':'No', 'True':'Yes'}
+    with open(filepath, 'r') as f:
+        for line in f:
+            viewer_data = line.split(',')
 
+            user_id = str(viewer_data[1])
+            view_start = int(viewer_data[2])
+            view_end = int(viewer_data[3])
+
+            watched_enough += user_id + ',' + \
+                    bool_yes_no[str((view_end - view_start) >= threshold)] + '\n'
+    with open(new_filepath, 'w') as new_file:
+        new_file.write(watched_enough)
+    
 # Part 3
 def compare_subscribe(data, subscriber):
     """
@@ -277,7 +324,45 @@ def compare_subscribe(data, subscriber):
     (0, 11)
 
     # Add at least 3 doctests below here #
-
+    >>> data2 = parse_file('files/viewer2.txt')
+    >>> compare_subscribe(data2, ['marina'])
+    (42, 47)
     """
-    # YOUR CODE GOES HERE #
-    return
+    all_keys = []
+    all_values = []
+    subscriber_index = []
+
+    sub_average = 0
+    sub_viewcount = 0
+
+    nonsub_average = 0
+    nonsub_viewcount = 0
+
+    for keys, values in data.items():
+        all_keys.append(keys)
+        all_values.append(values)
+
+    for i in range(0, len(all_keys)):
+        for j in range(0, len(subscriber)):
+            if all_keys[i][0] == subscriber[j]:
+                subscriber_index.append(i)
+
+    for i in range(0, len(subscriber_index)):
+        for j in range(0, len(all_values[subscriber_index[i]])):
+            sub_average += int(all_values[subscriber_index[i]][j])
+            sub_viewcount += 1
+
+    for i in range(0, len(all_values)):
+        if i not in subscriber_index:
+            for j in range(0, len(all_values[i])):
+                nonsub_average += int(all_values[i][j])
+                nonsub_viewcount += 1
+        else:
+            continue
+
+    if len(subscriber) != len(all_keys):
+        nonsub_average = nonsub_average // nonsub_viewcount
+
+    if len(subscriber) != 0:
+        sub_average = sub_average // sub_viewcount
+    return (sub_average, nonsub_average)
