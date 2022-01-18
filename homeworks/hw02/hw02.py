@@ -8,8 +8,8 @@ PID: A16679845
 def playlist_password(playlist_name, limit):
     """
     # Takes in a string representing playlist name
-    # and an integer character limit. Generates and 
-    # returns a string by defined rules that has a 
+    # and an integer character limit. Generates and
+    # returns a string by defined rules that has a
     # length less than or equal to the character limit.
 
     >>> playlist_password("World's Best Lasagne", 10)
@@ -39,7 +39,7 @@ def playlist_password(playlist_name, limit):
 
     if len(playlist_name) == 0:
         return ''
-    
+
     for i in playlist_name:
         if len(password) >= limit:
             return password
@@ -83,26 +83,29 @@ def cookable_recipes(ings, recipes):
     ['Beef Noodle', 'Beef Wrap']
     >>> cookable_recipes([], {})
     []
-    >>> cookable_recipes([])
+    >>> cookable_recipes(['egg', 'beefs', 'flour'], {'Egg Noodle': \
+['egg', 'flour'], 'Beef Noodle': ['eggs', 'beef', 'flour'], \
+'Beef Wrap': ['flour', 'beef']})
+    ['Egg Noodle']
     """
     possible_recipes = []
-    i = 0
+    ings_counter = 0
     for keys, values in recipes.items():
         for j in ings:
             if j in values:
-                i += 1
-            if i == len(values):
+                ings_counter += 1
+            if ings_counter == len(values):
                 possible_recipes.append(keys)
                 break
-        i = 0
+        ings_counter = 0
     return possible_recipes
 
 # Question 3
 # Part 1
 def process_purchase(purchase):
     """
-    # Takes in a list of tuples with two elements. Puts the 
-    # elements into dictionary by second element with 
+    # Takes in a list of tuples with two elements. Puts the
+    # elements into dictionary by second element with
     # values being the first element and returns.
 
     >>> process_purchase([('rice', 'mitsuwa'), ('msg', '99ranch'), \
@@ -141,7 +144,7 @@ def process_purchase(purchase):
 # Part 2
 def grocery_summary(grocery_purchases):
     """
-    # Takes in a list of dictionaries sorted as store as 
+    # Takes in a list of dictionaries sorted as store as
     # keys and items bought as values. Congregates the
     # items bought between the dictionaries and returns
     # the combined dictionary.
@@ -159,8 +162,11 @@ def grocery_summary(grocery_purchases):
     # Add at least 3 doctests below here #
     >>> grocery_summary([{}])
     {}
-    >>> grocery_summary([{'vons': ['egg', 'egg', 'egg']}])
-    {'vons': ['egg']}
+    >>> grocery_summary([{'vons': ['egg', 'egg', 'egg', 'eggs']}])
+    {'vons': ['egg', 'eggs']}
+    >>> grocery_summary([{'vons': ['egg', 'eggs', 'egg'], 'sams':\
+        ['eggs', 'peach']}, {'vons': ['flour']}])
+    {'vons': ['egg', 'eggs', 'flour'], 'sams': ['eggs', 'peach']}
     """
     if len(grocery_purchases) == 0:
         return {}
@@ -170,15 +176,15 @@ def grocery_summary(grocery_purchases):
     for i in range(0, len(grocery_purchases)):
         for keys in grocery_purchases[i].keys():
             combined_keys.append(keys)
-    
+
     for i in range(0, len(combined_keys)):
         combined_dict[combined_keys[i]] = []
 
     for i in range(0, len(grocery_purchases)):
         for keys, values in grocery_purchases[i].items():
-            for i in range(0, len(values)):
-                if values[i] not in combined_dict[keys]:
-                    combined_dict[keys].append(values[i])         
+            for j in range(0, len(values)):
+                if values[j] not in combined_dict[keys]:
+                    combined_dict[keys].append(values[j])
     return combined_dict
 
 # Question 4
@@ -199,6 +205,10 @@ def channel_stats(videos_stats):
     # Add at least 3 doctests below here #
     >>> channel_stats([[0, 0, 0, 0], [0, 0, 0, 0]])
     [('likes', 0), ('dislikes', 0), ('comments', 0), ('views', 0)]
+    >>> channel_stats([[12, 24, 36, 48], [2, 3, 4, 5], [11, 22, 33, 44]])
+    [('likes', 25), ('dislikes', 49), ('comments', 73), ('views', 97)]
+    >>> channel_stats([[1, 2, 3, 4], [4, 5, 6, 7]])
+    [('likes', 5), ('dislikes', 7), ('comments', 9), ('views', 11)]
     """
     total_likes = 0
     total_dislikes = 0
@@ -215,8 +225,8 @@ def channel_stats(videos_stats):
         total_dislikes += videos_stats[i][dislikes_index]
         total_comments += videos_stats[i][comments_index]
         total_views += videos_stats[i][views_index]
-    return [('likes', total_likes), ('dislikes', total_dislikes), 
-        ('comments', total_comments), ('views', total_views)]
+    return [('likes', total_likes), ('dislikes', total_dislikes),
+            ('comments', total_comments), ('views', total_views)]
 
 # Question 5
 # Part 1
@@ -236,11 +246,15 @@ def parse_file(filepath):
     # Add at least 3 doctests below here #
     >>> parse_file('files/viewer3.txt')
     {('will', 7): [10, 9, 0]}
+    >>> parse_file('files/viewer4.txt')
+    {('will', 7): [0, 10, 21], ('zhien', 3): [4, 0]}
+    >>> parse_file('files/viewer5.txt')
+    {('will', 7): [1, 84], ('zhien', 3): [1], ('toby', 4): [1, 11]}
     """
     viewer_data = ''
     analytics = {}
-    with open(filepath, 'r') as f:
-        for line in f:
+    with open(filepath, 'r') as file:
+        for line in file:
             viewer_data = line.split(',')
 
             username = viewer_data[0]
@@ -289,13 +303,29 @@ def long_views(filepath, threshold):
     >>> with open('files/empty_modified.txt', 'r') as outfile4:
     ...     print(outfile4.read().strip())
     <BLANKLINE>
+    >>> long_views('files/viewer4.txt', 0)
+    >>> with open('files/viewer4_modified.txt', 'r') as outfile5:
+    ...     print(outfile5.read().strip())
+    7,Yes
+    7,Yes
+    3,Yes
+    7,Yes
+    3,Yes
+    >>> long_views('files/viewer5.txt', 2)
+    >>> with open('files/viewer5_modified.txt', 'r') as outfile6:
+    ...     print(outfile6.read().strip())
+    7,No
+    3,No
+    4,No
+    4,Yes
+    7,Yes
     """
     new_filepath = filepath.split('.')[0] + '_modified.txt'
     viewer_data = ''
     watched_enough = ''
-    bool_yes_no = {'False':'No', 'True':'Yes'}
-    with open(filepath, 'r') as f:
-        for line in f:
+    bool_to_yn = {'False': 'No', 'True': 'Yes'}
+    with open(filepath, 'r') as file:
+        for line in file:
             viewer_data = line.split(',')
 
             user_id = str(viewer_data[1])
@@ -303,17 +333,19 @@ def long_views(filepath, threshold):
             view_end = int(viewer_data[3])
 
             watched_enough += user_id + ',' + \
-                    bool_yes_no[str((view_end - view_start) >= threshold)] + '\n'
+                bool_to_yn[str((view_end - view_start) >= threshold)] + '\n'
     with open(new_filepath, 'w') as new_file:
         new_file.write(watched_enough)
-    
+
 # Part 3
 def compare_subscribe(data, subscriber):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    # Takes in a dictionary with tuple keys containing
+    # username and user ID and values denoting watch times
+    # as well as a list of strings denoting subscribers.
+    # A person is a subscriber if their username is
+    # in the subscriber list. Return the average watch
+    # time of subscribers and non-subscribers.
 
     >>> data = parse_file('files/viewer1.txt')
     >>> compare_subscribe(data, ['marina'])
@@ -327,6 +359,11 @@ def compare_subscribe(data, subscriber):
     >>> data2 = parse_file('files/viewer2.txt')
     >>> compare_subscribe(data2, ['marina'])
     (42, 47)
+    >>> compare_subscribe(data2, ['marina', 'colin'])
+    (58, 33)
+    >>> data3 = parse_file('files/viewer3.txt')
+    >>> compare_subscribe(data3, [])
+    (0, 6)
     """
     all_keys = []
     all_values = []
