@@ -26,7 +26,18 @@ def ingredient_reverse(input_recipe):
 'Rice': ['Sushi'], 'Cucumber': ['Sushi']}
 
     """
-    #Your code here
+    dish = []
+    ingredients = []
+    ings_dict = {}
+    with open(input_recipe, 'r') as f:
+        for line in f:
+            dish = line.split(': ')[0]
+            ingredients = line.split(': ')[1].split(', ')
+            for i in range(0, len(ingredients)):
+                if ingredients[i].strip() not in ings_dict:
+                    ings_dict[ingredients[i].strip()] = []
+                ings_dict[ingredients[i].strip()].append(dish)
+    return ings_dict
 
 #Q2
 def popular_words_message(messages, word):
@@ -44,7 +55,18 @@ def popular_words_message(messages, word):
     >>> popular_words_message("files/Message_3.txt", "secret")
     (8, 1)
     """
-    #Your code here
+    max_count = 0
+    max_line = 0
+    line_counter = 1
+    word_list = []
+    with open(messages, 'r') as f:
+        for line in f:
+            word_list = line.lower().replace(',','').strip().split(' ')
+            if word_list.count(word.lower()) > max_count:
+                max_count = word_list.count(word.lower())
+                max_line = line_counter
+            line_counter += 1
+    return (max_line, max_count)
 
 #Q3
 def cake_decoration(orders):
@@ -64,7 +86,7 @@ def cake_decoration(orders):
     >>> cake_decoration(["Looooool","Yesssss", 'uncopyrightable.'])
     [3, 16]
     """
-    #Your code here
+    return [len(set(x)) for x in orders if len(x) % 2 == 0 ]
 
 #Q4
 def transpose(matrix):
@@ -105,7 +127,8 @@ def transpose(matrix):
     [1, 2, 3, 4, 5, 6]
 
     """
-    #Your code here
+    return [[matrix[i][x] for i in range(0, len(matrix))] \
+            for x in range(0, len(matrix[0]))]
 
 #Q5
 def pascals_triangle(n):
@@ -142,4 +165,4 @@ def pascals_triangle(n):
     [1, 4, 6, 4, 1]
     [1, 6, 1, 0, 5, 1]
     """
-    #Your code here
+    return [[int(y) for y in str(11 ** (x))] for x in range(0, n)]
