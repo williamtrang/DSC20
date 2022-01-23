@@ -63,7 +63,7 @@ def sort_by_index(index, array):
     Traceback (most recent call last):
     ...
     AssertionError
-    
+
     >>> sort_by_index([],[])
     []
     """
@@ -71,7 +71,7 @@ def sort_by_index(index, array):
     assert type(array) == list
     assert len(set(index)) == len(array)
     assert all([isinstance(idx, int) for idx in index])
-    assert [i in range(len(index)) for i in index] == [True for _ in range(0, len(index))]
+    assert [i in range(len(index)) for i in index] == ([True] * len(index))
     return [(array[index[i]], index[i], i) for i in range(0, len(index))]
 
 
@@ -93,8 +93,11 @@ def intersection(str1, str2):
     Traceback (most recent call last):
     ...
     AssertionError
+
+    # My doctests
     """
-    # YOUR CODE GOES HERE #
+    assert type(str1) == str
+    assert type(str2) == str
     return
 
 
@@ -119,9 +122,22 @@ def decode(to_decode):
     Traceback (most recent call last):
     ...
     AssertionError
+
+    # My doctests
+    >>> decode('324798578~!!')
+    Traceback (most recent call last):
+    ...
+    AssertionError
+    >>> decode('3A4a')
+    Traceback (most recent call last):
+    ...
+    AssertionError
     """
-    # YOUR CODE GOES HERE #
-    return
+    assert type(to_decode) == str
+    assert to_decode.lower() != to_decode
+    assert to_decode.replace(' ', '').isalpha()
+    return ''.join([a for a in to_decode if a.isupper()])\
+         + ''.join([a.upper() for a in to_decode if not(a.isupper())])
 
 
 # Question 4
@@ -182,7 +198,7 @@ def average_housing(house_prices):
                         'Maple Lane': [3, -9999, 3, 3]})
     'Acorn Blvd'
     """
-    # YOUR CODE GOES HERE #
+    assert type(house_prices) == dict
     return
 
 
