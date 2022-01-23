@@ -1,7 +1,7 @@
 """
 DSC 20 Lab 03
-Name: TODO
-PID: TODO
+Name: William Trang
+PID: A16679845
 """
 
 # Q1

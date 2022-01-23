@@ -1,7 +1,7 @@
 """
 DSC 20 Homework 03
-Name: TODO
-PID: TODO
+Name: William Trang
+PID: A16679845
 """
 
 ### Question 1
@@ -23,8 +23,10 @@ def sort_by_index_with_for_loop(index, array):
     [('zero', 0, 0), ('one', 4, 1), ('two', 2, 2), ('three', 3, 3), \
 ('four', 1, 4)]
     """
-    # YOUR CODE GOES HERE #
-    return
+    sorted_list = []
+    for i in range(0, len(array)):
+        sorted_list.append((array[index[i]], index[i], i))
+    return sorted_list
 
 
 def sort_by_index(index, array):
@@ -55,9 +57,22 @@ def sort_by_index(index, array):
     Traceback (most recent call last):
     ...
     AssertionError
+
+    # My doctests #
+    >>> sort_by_index([1, 4, 3, 2], ['one', 'four', 'three', 'two'])
+    Traceback (most recent call last):
+    ...
+    AssertionError
+    
+    >>> sort_by_index([],[])
+    []
     """
-    # YOUR CODE GOES HERE #
-    return
+    assert type(index) == list
+    assert type(array) == list
+    assert len(set(index)) == len(array)
+    assert all([isinstance(idx, int) for idx in index])
+    assert [i in range(len(index)) for i in index] == [True for _ in range(0, len(index))]
+    return [(array[index[i]], index[i], i) for i in range(0, len(index))]
 
 
 ### Question 2
