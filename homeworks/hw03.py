@@ -232,12 +232,24 @@ def create_id(names, commands):
 ('insert', 2, 'Mabel'), ('length', 4)])
     ['TomN', 'Isab', 'Ma5bel']
     """
-    upper = lambda string, count: ''.join([i.upper() if (i+1) % 3 == 0 \
-         else i for i in range(0, len(string))])
-    first = lambda string, count: string[:count]
-    last = lambda string, count: string[(len(string) - count):]
-    insert = lambda lst, string, index: lst.insert(string, index)
-    length = lambda string, amount: ''.join([string.insert(len(string), \
-        len(string) // 2) if len(string) > amount else string])
+    commands_dict = {
+    'upper': lambda string, count: ''.join([string[i].upper() if (i+1) % count == 0 \
+         else string[i] for i in range(0, len(string))]),
+    'first': lambda string, count: string[:count],
+    'last': lambda string, count: string[(len(string) - count):],
+    'insert': lambda lst, index, string: lst.insert(index, string),
+    'remove': lambda lst, index: lst.pop(index),
+    'length': lambda string, amount: string[:len(string) // 2] \
+        + str(len(string)) + string[len(string) // 2:] if len(string) > amount else string
+    }
 
-    return
+    for i in range(0, len(commands)):
+        curr_command = commands[i][0]
+        if (curr_command != 'insert') and (curr_command != 'remove'):
+            for j in range(0, len(names)):
+                names[j] = commands_dict[curr_command](names[j], commands[i][1])
+        elif curr_command == 'remove':
+            commands_dict[curr_command](names, commands[i][1])
+        elif curr_command == 'insert':
+            commands_dict[curr_command](names, commands[i][1], commands[i][2])
+    return names
