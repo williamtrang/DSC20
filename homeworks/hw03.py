@@ -158,8 +158,9 @@ def find_closest_stores(friends, stores):
     >>> find_closest_stores(friends2, stores2)
     {'bob': 'costco'}
     """
-    # YOR CODE GOES HERE #
-    return
+    return {names:min([(abs(distance - locations), store) \
+        for store, distance in stores.items()])[1] \
+            for names, locations in friends.items()}
 
 
 # Question 5
