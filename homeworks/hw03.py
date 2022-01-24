@@ -66,6 +66,9 @@ def sort_by_index(index, array):
 
     >>> sort_by_index([],[])
     []
+
+    >>> sort_by_index([3, 2, 0, 1], ['three', 'two', 'zero', 'one'])
+    [('one', 3, 0), ('zero', 2, 1), ('three', 0, 2), ('two', 1, 3)]
     """
     assert isinstance(index, list)
     assert isinstance(array, list)
@@ -95,6 +98,14 @@ def intersection(str1, str2):
     AssertionError
 
     # My doctests
+    >>> intersection('aaabbbccc', 'bbbcccaaa')
+    ''
+
+    >>> intersection('2345', '12358459374ffdhk~!#*')
+    '5'
+    
+    >>> intersection('#RELATABLE!', '#relatable!')
+    '#!'
     """
     assert isinstance(str1, str)
     assert isinstance(str2, str)
@@ -129,10 +140,14 @@ def decode(to_decode):
     Traceback (most recent call last):
     ...
     AssertionError
+
     >>> decode('3A4a')
     Traceback (most recent call last):
     ...
     AssertionError
+
+    >>> decode(' i DloSCve')
+    'DSC I LOVE'
     """
     assert isinstance(to_decode, str)
     assert to_decode.lower() != to_decode
@@ -167,6 +182,21 @@ def find_closest_stores(friends, stores):
     {'bob': 'costco'}
 
     # My doctests
+
+    >>> friends3 = {'joe': 10, 'jack': 20}
+    >>> stores3 = {'target': 5, 'walmart': 16}
+    >>> find_closest_stores(friends3, stores3)
+    {'joe': 'target', 'jack': 'walmart'}
+
+    >>> friends4 = {'bob': 12}
+    >>> stores4 = {'target': 12, 'costco': 12, 'apple': 12}
+    >>> find_closest_stores(friends4, stores4)
+    {'bob': 'apple'}
+
+    >>> friends5 = {'joe': 0, 'jack': 2.5}
+    >>> stores5 = {'target': 1.25, 'walmart': 1}
+    >>> find_closest_stores(friends5, stores5)
+    {'joe': 'walmart', 'jack': 'target'}
     """
     return {names: min([(abs(distance - locations), store) \
             for store, distance in stores.items()])[1] \
@@ -216,6 +246,20 @@ def average_housing(house_prices):
     Traceback (most recent call last):
     ...
     AssertionError
+
+    >>> average_housing(47)
+    Traceback (most recent call last):
+    ...
+    AssertionError
+
+    >>> average_housing({'LA': [1, 4, 5, -2], 'SD': [1, 3, -9999], \
+        'JOE': [1, 2, 3]})
+    'JOE'
+
+    >>> average_housing({'JOE': 124})
+    Traceback (most recent call last):
+    ...
+    AssertionError
     """
     assert isinstance(house_prices, dict)
     assert all([isinstance(keys, str) for keys in house_prices.keys()])
@@ -247,8 +291,20 @@ def create_id(names, commands):
     ['TomN', 'Isab', 'Ma5bel']
 
     # My doctests
+    >>> create_id(['HappyNewYear', 'Merry Christmas'], [('upper', 2), \
+        ('last', 9), ('remove', 1), ('insert', 1, 'Halloween'), \
+            ('first', 5), ('length', 1)])
+    ['Py5NeW', 'Ha5llo']
 
+    >>> create_id(['HappyNewYear', 'Merry Christmas'], [('remove', 1), \
+        ('insert', 0, 'Halloween')])
+    ['Halloween', 'HappyNewYear']
+
+    >>> create_id(['Isabelle', 'TomNook'], [('last', 4), \
+        ('insert', 1, 'Resetti'), ('upper', 4)])
+    ['ellE', 'ResEtti', 'NooK']
     """
+    string_half = 2
     commands_dict = {
         'upper': lambda string, count: ''.join([string[i].upper() \
                 if (i+1) % count == 0 else string[i]
@@ -257,8 +313,8 @@ def create_id(names, commands):
         'last': lambda string, count: string[(len(string) - count):],
         'insert': lambda lst, index, string: lst.insert(index, string),
         'remove': lambda lst, index: lst.pop(index),
-        'length': lambda string, amount: string[:len(string) // 2] \
-                    + str(len(string)) + string[len(string) // 2:] \
+        'length': lambda string, amount: string[:len(string) // string_half] \
+                    + str(len(string)) + string[len(string) // string_half:] \
                     if len(string) > amount else string
     }
 
@@ -271,5 +327,7 @@ def create_id(names, commands):
         elif curr_command == 'remove':
             commands_dict[curr_command](names, comm_value)
         elif curr_command == 'insert':
-            commands_dict[curr_command](names, comm_value, commands[i][2])
+            add_string_index = 2
+            add_string = commands[i][add_string_index]
+            commands_dict[curr_command](names, comm_value, add_string)
     return names
