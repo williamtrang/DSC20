@@ -67,8 +67,8 @@ def sort_by_index(index, array):
     >>> sort_by_index([],[])
     []
     """
-    assert type(index) == list
-    assert type(array) == list
+    assert isinstance(index, list)
+    assert isinstance(array, list)
     assert len(set(index)) == len(array)
     assert all([isinstance(idx, int) for idx in index])
     assert all([i in range(len(index)) for i in index])
@@ -96,9 +96,10 @@ def intersection(str1, str2):
 
     # My doctests
     """
-    assert type(str1) == str
-    assert type(str2) == str
-    return ''.join([str1[i] for i in range(0, min([len(str1), len(str2)])) if str1[i] == str2[i]])
+    assert isinstance(str1, str)
+    assert isinstance(str2, str)
+    return ''.join([str1[i] \
+        for i in range(0, min([len(str1), len(str2)])) if str1[i] == str2[i]])
 
 
 ### Question 3
@@ -133,20 +134,27 @@ def decode(to_decode):
     ...
     AssertionError
     """
-    assert type(to_decode) == str
+    assert isinstance(to_decode, str)
     assert to_decode.lower() != to_decode
     assert to_decode.replace(' ', '').isalpha()
-    return ''.join([a for a in to_decode if a.isupper()])\
-         + ''.join([a.upper() for a in to_decode if not(a.isupper())])
+    return ''.join([a for a in to_decode if a.isupper()]) \
+        + ''.join([a.upper() for a in to_decode if not a.isupper()])
 
 
 # Question 4
 def find_closest_stores(friends, stores):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Finds the closest store to each friend based
+    on absolute distance from the store.
+
+    Parameters:
+        friends: Dictionary with friend names as keys
+        and point location as values.
+        stores: Dictionary with store names as keys
+        and point locations as values.
+    Returns:
+        Dictionary with friends names as keys and the
+        store closest to them as values.
 
     >>> friends1 = {'rob': 10, 'bob': 12}
     >>> stores1 = {'walmart': 11, 'costco': 12}
@@ -157,9 +165,11 @@ def find_closest_stores(friends, stores):
     >>> stores2 = {'target': 12, 'costco': 12}
     >>> find_closest_stores(friends2, stores2)
     {'bob': 'costco'}
+
+    # My doctests
     """
-    return {names:min([(abs(distance - locations), store) \
-        for store, distance in stores.items()])[1] \
+    return {names: min([(abs(distance - locations), store) \
+            for store, distance in stores.items()])[1] \
             for names, locations in friends.items()}
 
 
@@ -207,22 +217,26 @@ def average_housing(house_prices):
     ...
     AssertionError
     """
-    assert type(house_prices) == dict
+    assert isinstance(house_prices, dict)
     assert all([isinstance(keys, str) for keys in house_prices.keys()])
     assert all([isinstance(values, list) for values in house_prices.values()])
     null_value = -9999
-    return min([(sum([i for i in values if i != null_value])/ \
-        len([i for i in values if i != null_value]), keys) \
-            for keys, values in house_prices.items()])[1]
+    return min([(sum([i for i in values if i != null_value]) / \
+                len([i for i in values if i != null_value]), keys) \
+                for keys, values in house_prices.items()])[1]
 
 
 # Question 6
 def create_id(names, commands):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Transforms a list of ids based on given list of commands.
+
+    Parameters:
+        names: Starting list of names to transform.
+        commands: List of tuples containing transformations to 
+        perform on the names list.
+    Returns: 
+        List of names that has been transformed.
 
     >>> create_id(["TomNook", "Isabelle"], [('upper', 2)])
     ['TOmNoOk', 'ISaBeLlE']
@@ -231,25 +245,31 @@ def create_id(names, commands):
     >>> create_id(["TomNook", "Isabelle"], [('first', 4), \
 ('insert', 2, 'Mabel'), ('length', 4)])
     ['TomN', 'Isab', 'Ma5bel']
+
+    # My doctests
+
     """
     commands_dict = {
-    'upper': lambda string, count: ''.join([string[i].upper() if (i+1) % count == 0 \
-         else string[i] for i in range(0, len(string))]),
-    'first': lambda string, count: string[:count],
-    'last': lambda string, count: string[(len(string) - count):],
-    'insert': lambda lst, index, string: lst.insert(index, string),
-    'remove': lambda lst, index: lst.pop(index),
-    'length': lambda string, amount: string[:len(string) // 2] \
-        + str(len(string)) + string[len(string) // 2:] if len(string) > amount else string
+        'upper': lambda string, count: ''.join([string[i].upper() \
+                if (i+1) % count == 0 else string[i]
+                for i in range(0, len(string))]),
+        'first': lambda string, count: string[:count],
+        'last': lambda string, count: string[(len(string) - count):],
+        'insert': lambda lst, index, string: lst.insert(index, string),
+        'remove': lambda lst, index: lst.pop(index),
+        'length': lambda string, amount: string[:len(string) // 2] \
+                    + str(len(string)) + string[len(string) // 2:] \
+                    if len(string) > amount else string
     }
 
     for i in range(0, len(commands)):
         curr_command = commands[i][0]
-        if (curr_command != 'insert') and (curr_command != 'remove'):
+        comm_value = commands[i][1]
+        if curr_command not in ['insert', 'remove']:
             for j in range(0, len(names)):
-                names[j] = commands_dict[curr_command](names[j], commands[i][1])
+                names[j] = commands_dict[curr_command](names[j], comm_value)
         elif curr_command == 'remove':
-            commands_dict[curr_command](names, commands[i][1])
+            commands_dict[curr_command](names, comm_value)
         elif curr_command == 'insert':
-            commands_dict[curr_command](names, commands[i][1], commands[i][2])
+            commands_dict[curr_command](names, comm_value, commands[i][2])
     return names
