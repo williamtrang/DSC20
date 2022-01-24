@@ -71,7 +71,7 @@ def sort_by_index(index, array):
     assert type(array) == list
     assert len(set(index)) == len(array)
     assert all([isinstance(idx, int) for idx in index])
-    assert [i in range(len(index)) for i in index] == ([True] * len(index))
+    assert all([i in range(len(index)) for i in index])
     return [(array[index[i]], index[i], i) for i in range(0, len(index))]
 
 
@@ -98,7 +98,7 @@ def intersection(str1, str2):
     """
     assert type(str1) == str
     assert type(str2) == str
-    return
+    return ''.join([str1[i] for i in range(0, min([len(str1), len(str2)])) if str1[i] == str2[i]])
 
 
 ### Question 3
@@ -197,9 +197,22 @@ def average_housing(house_prices):
                         'Pine Ave': [4, 3, -9999], \
                         'Maple Lane': [3, -9999, 3, 3]})
     'Acorn Blvd'
+
+    # My doctests
+    >>> average_housing({'LA': [782900, 1368800, 599000, 750000], \
+                        2: [746600, 697100, 989900, 785000], \
+                        'BNY': [675000, 239000, 789000, 1049000]})
+    Traceback (most recent call last):
+    ...
+    AssertionError
     """
     assert type(house_prices) == dict
-    return
+    assert all([isinstance(keys, str) for keys in house_prices.keys()])
+    assert all([isinstance(values, list) for values in house_prices.values()])
+    null_value = -9999
+    return min([(sum([i for i in values if i != null_value])/ \
+        len([i for i in values if i != null_value]), keys) \
+            for keys, values in house_prices.items()])[1]
 
 
 # Question 6
@@ -218,5 +231,12 @@ def create_id(names, commands):
 ('insert', 2, 'Mabel'), ('length', 4)])
     ['TomN', 'Isab', 'Ma5bel']
     """
-    # YOUR CODE GOES HERE #
+    upper = lambda string, count: ''.join([i.upper() if (i+1) % 3 == 0 \
+         else i for i in range(0, len(string))])
+    first = lambda string, count: string[:count]
+    last = lambda string, count: string[(len(string) - count):]
+    insert = lambda lst, string, index: lst.insert(string, index)
+    length = lambda string, amount: ''.join([string.insert(len(string), \
+        len(string) // 2) if len(string) > amount else string])
+
     return
