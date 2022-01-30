@@ -1,7 +1,7 @@
 """
 DSC 20 Lab 04
-Name: TODO
-PID: TODO
+Name: William Trang
+PID: A16679845
 """
 
 # Q1
@@ -19,7 +19,7 @@ def smiley(message):
     >>> smiley(":(((((")
     ':)(:(:(:(:(:'
     """
-    # Your code here
+    return ''.join(list(map(lambda mess: ':)' if mess == ':' else '(:' if mess == '(' else ':)' if mess == ')' else mess, message)))
 
 #Q2
 def math_message(message):
@@ -37,7 +37,7 @@ def math_message(message):
     >>> math_message("!@!@!@")
     ''
     """
-    # Your code here
+    return ''.join(list(map(lambda repl_str: repl_str.replace('e', '3').replace('E', '3').replace('a', '4').replace('A', '4').replace('o', '0').replace('O','0').replace('s', '5').replace('S', '5'), filter(lambda string: string.isalnum(), message))))
 
 #Q3
 def chocolate_cakes(recipes):
@@ -55,7 +55,9 @@ def chocolate_cakes(recipes):
     >>> chocolate_cakes({})
     []
     """
-    # Your code here
+    cake_check = lambda cake: False if 'cake' not in cake else True
+    choco_check = lambda choco: True if 'chocolate' in choco else False
+    return list(filter(lambda x: list(map(choco_check, recipes.values())) and list(map(cake_check, recipes)), recipes))
 
 #Q4
 def contains_ingredients(ing, check_ing):
@@ -77,7 +79,7 @@ def contains_ingredients(ing, check_ing):
     "cinnamon", "eggs",])
     [['honey', 'cinnamon'], [], ['eggs'], ['vanilla']]
     """
-    # Your code here
+    return list(map(lambda ings: list(filter(lambda inside_ings: True if inside_ings in check_ing else False, ings)), ing))
 
 #Q5
 def christmas_gifts(gifts, maximum_price):
@@ -98,7 +100,7 @@ def christmas_gifts(gifts, maximum_price):
     >>> christmas_gifts(gifts, 10)
     ['Phone']
     """
-    # Your code here
+    return list(map(lambda gift_name: gift_name[0],list(filter(lambda gift: True if gift[1] <= maximum_price else False, gifts))))
 
 #Q6
 def notifications(notifications_list, max_chars):
@@ -118,4 +120,4 @@ def notifications(notifications_list, max_chars):
     >>> notifications(notif, 100)
     4
     """
-    # Your code here
+    return list(map(lambda notifs: True if len(notifs) <= max_chars else False, notifications_list)).count(True)
