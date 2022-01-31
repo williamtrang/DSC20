@@ -1,7 +1,7 @@
 """
 DSC 20 Homework 04
-Name: TODO
-PID: TODO
+Name: William Trang
+PID: A16679845
 """
 from math import log
 # Question 1.1
@@ -17,9 +17,15 @@ def contract_list(filepath):
     ['Luke Pacetti, 17', 'Jonah Garcia, 16', 'Brandon Olander, 20', 'Ed Cloyd, 400']
     >>> contract_list('files/contracts3.txt')
     ['Stewie Lewis, 22', 'Sarah Culbertson, 19', 'Kim Lam, 21']
+
+    # My doctests #
+
     """
-    # YOUR CODE GOES HERE #
-    return
+    names = []
+    with open(filepath, 'r') as f:
+        for line in f:
+            names.append(line.strip())
+    return names
 
 # Question 1.2
 def registration(names, veterans):
@@ -40,8 +46,12 @@ def registration(names, veterans):
 
     # Add at least 3 doctests below here #
     """
-    # YOUR CODE GOES HERE #
-    return
+    assert isinstance(names, list)
+    assert isinstance(veterans, list)
+    assert all([isinstance(i, str) for i in names])
+    assert all([isinstance(i, str) for i in veterans])
+    max_age = 22
+    return list(filter(lambda player: True if player not in veterans and int(player.split(', ')[1]) < max_age else False, names))
 
 # Question 2
 # Part 1 
