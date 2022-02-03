@@ -34,7 +34,7 @@ def vector_op(lst, func):
     >>> vector_op(lst, cube)
     [1000, 8000, 27000]
     """
-    # Your code here
+    return [func(i) for i in lst]
 
 
 # Q2
@@ -55,7 +55,7 @@ def matrix_op(lsts, func):
     [[5, 15], [25, 35]]
 
     """
-    # Your code here
+    return [[func(i) for i in lst] for lst in lsts]
 
 
 # Q3
