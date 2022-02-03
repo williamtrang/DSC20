@@ -75,7 +75,7 @@ def hop_hop(lst, func):
     >>> hop_hop(lst, cube)
     [1000000000, 512000000000, 19683000000000]
     """
-    # Your code here
+    return [func(func(i)) for i in lst]
 
 
 # Q4
@@ -94,7 +94,12 @@ def hop_many(lst, func, iterations):
     >>> hop_many(lst, lambda x: x - 1, 4)
     [-3, -2, -1]
     """
-    # Your code here
+    final = []
+    for i in lst:
+        for _ in range(iterations):
+            i = func(i)
+        final.append(i)
+    return final
 
 
 # Q5
@@ -112,7 +117,9 @@ def can_replace(func, n):
     >>> can_replace(identity, -1)(identity)
     True
     """
-    # Your code here
+    def inner(func2):
+        return func2(n) == func(n)
+    return inner
 
 
 # Q6.1
@@ -134,7 +141,22 @@ def strange_sequence(num1, num2):
     >>> inner(1)
     ['nothing special']
     """
-    # Your code here
+    def gems(limit):
+        gem_lst = []
+        element = 0
+        for number in range(1, limit + 1):
+            element = number
+            if (number % num1 == 0) and (number % num2 == 0) and (number == num1 + num2):
+                element = 'gem found'
+            elif (number % num1 == 0) and (number % num2 == 0):
+                element = number - num1 - num2
+            elif (number % num1 == 0):
+                element = number + num1 + num2
+            else:
+                element = 'nothing special'
+            gem_lst.append(element)
+        return gem_lst
+    return gems
 
 
 # Q6.2
@@ -150,4 +172,4 @@ def param_for_gem():
     >>> all([isinstance(num, int) for num in output])
     True
     """
-    # Your code here
+    return [2, 1, 1]
