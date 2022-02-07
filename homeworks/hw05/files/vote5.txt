@@ -1,0 +1,6 @@
+Will,1
+Zhi,1
+TL,1
+DJ,0
+Rj,0
+RD,1
