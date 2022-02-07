@@ -26,8 +26,8 @@ def log(x):
 # Question1
 def db_calc(dynamic, inst_mult):
     """
-    Given a musical dynamic abbreviation as a string and a 
-    multiplier inst_mult for louder and softer instruments 
+    Given a musical dynamic abbreviation as a string and a
+    multiplier inst_mult for louder and softer instruments
     as a float, compute the intial decibel level based on
     distance from the instrument.
 
@@ -68,11 +68,11 @@ def db_calc(dynamic, inst_mult):
     AssertionError
     """
     assert isinstance(dynamic, str)
-    assert isinstance(inst_mult, float) or isinstance(inst_mult, int)
+    assert isinstance(inst_mult, (float, int))
     assert (inst_mult >= .8) and (inst_mult <= 1.2)
-    
+
     db = {'pp': 30,
-          'p': 45, 
+          'p': 45,
           'mp': 60,
           'mf': 75,
           'f': 90,
@@ -160,6 +160,7 @@ def next_move(file_names, decision):
             tmp = line.split(',')
             if tmp[dec_index].strip().lower() == decision.lower():
                 name_list.append(tmp[f_name])
+
     def final_message(message):
         """
         Creates and returns a string final_message based
@@ -194,7 +195,7 @@ def forge(filepath):
     Returns:
         Function that forges votes in the file.
 
-	>>> forge('files/vote1.txt')(0)
+    >>> forge('files/vote1.txt')(0)
     >>> with open('files/vote1.txt', 'r') as outfile1:
     ...     print(outfile1.read().strip())
     Jerry,0
@@ -256,8 +257,9 @@ def forge(filepath):
     with open(filepath, 'r') as f:
         for line in f:
             votes[int(line.split(',')[vote_index])] += 1
-       
+
     majority = int((votes[0] + votes[1]) / 2) + 1
+
     def change_votes(wanted):
         """
         Takes in a vote that is the desired result of the
@@ -273,7 +275,8 @@ def forge(filepath):
             for line in f:
                 if votes_to_change > 0:
                     if int(line.split(',')[vote_index]) != int(wanted):
-                        new_votes += line.split(',')[name_index] + ',' + str(wanted) + '\n'
+                        new_votes += line.split(',')[name_index] + \
+                            ',' + str(wanted) + '\n'
                         votes_to_change -= 1
                     else:
                         new_votes += line
@@ -306,8 +309,14 @@ def number_of_adults_1(lst, age = 18):
     2
     >>> number_of_adults_1([1,2,3,4,5,6,7], age = 2)
     1
-    
+
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> number_of_adults_1([18, 20, 19, 90])
+    0
+    >>> number_of_adults_1([1,2,3,4,5,6,7], 2)
+    1
+    >>> number_of_adults_1([])
+    0
     """
     adults_per_kid = 3
     return ceil(len([ages for ages in lst if ages < age]) / adults_per_kid)
@@ -334,10 +343,17 @@ def number_of_adults_2(*args):
     0
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> number_of_adults_2(1,2,3,4,5,6,7,8,9,10,19)
+    4
+    >>> number_of_adults_2(10)
+    1
+    >>> number_of_adults_2(0)
+    1
     """
     adults_per_kid = 3
     age_threshold = 18
-    return ceil(len([ages for ages in args if ages < age_threshold]) / adults_per_kid)
+    return ceil(len([ages for ages in args \
+        if ages < age_threshold]) / adults_per_kid)
 
 # Question4.3
 def number_of_adults_3(*args, age = 18):
@@ -363,6 +379,12 @@ def number_of_adults_3(*args, age = 18):
     1
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> number_of_adults_3(19,19,20,20,31)
+    0
+    >>> number_of_adults_3(1,2,3,4,5,6,7, 5)
+    3
+    >>> number_of_adults_3(19,20,21, age = 42)
+    1
     """
     adults_per_kid = 3
     return ceil(len([ages for ages in args if ages < age]) / adults_per_kid)
@@ -392,6 +414,13 @@ def school_trip(age_limit, **kwargs):
     {'class1': 1, 'class2': 2, 'class3': 2}
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> school_trip(2, class2=[2,2,2], class3=[3,3,3,3,3,3,3], class4=[4,4,4])
+    {'class2': 0, 'class3': 0, 'class4': 0}
+    >>> school_trip(11, class1=[12,13,14,15], class2=[10,10,10,11])
+    {'class1': 0, 'class2': 1}
+    >>> school_trip(15, class1=[12,13,14,15], \
+        class2=[10,10,10,11,12,13,14,14,14,14])
+    {'class1': 1, 'class2': 4}
     """
     trip = []
     for keys, values in kwargs.items():
@@ -424,9 +453,16 @@ def rearrange_args(*args, **kwargs):
     [('keyword_0_no_positional', True)]
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> rearrange_args(11, 'no_kw')
+    [('positional_0', 11), ('positional_1', 'no_kw')]
+    >>> rearrange_args(11, keyW = 'MONKEY!!!!')
+    [('positional_0', 11), ('keyword_0_keyW', 'MONKEY!!!!')]
+    >>> rearrange_args(keyW = 4.0, d11='C')
+    [('keyword_0_keyW', 4.0), ('keyword_1_d11', 'C')]
     """
     key_index = 0
     val_index = 1
-    return [('positional_' + str(count), arg) for count, arg in list(enumerate(args))] \
-        + [('keyword_' + str(num) + '_' + dic[key_index], dic[val_index]) \
+    return [('positional_' + str(count), arg) for count, arg\
+        in list(enumerate(args))] + [('keyword_' + str(num) + '_' + \
+            str(dic[key_index]), dic[val_index]) \
             for num, dic in enumerate(kwargs.items())]
