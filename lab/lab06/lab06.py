@@ -1,7 +1,7 @@
 """
 DSC20 WI22 LAB06
-Name: TODO
-PID:  TODO
+Name: William Trang
+PID:  A16679845
 """
 
 # Question1
@@ -19,7 +19,7 @@ def complexity_tf():
     True
     """
     # Your code here
-    return []
+    return [False, True, False, False, False, False, True, False, True, False]
 
 
 # Question2
@@ -44,8 +44,14 @@ def files_target_count(target, *args):
      'files/file3.txt')
     26
     """
-    # Your code here
-    return None
+    count = 0
+    for files in args:
+        with open(files, 'r') as f:
+            for line in f:
+                for char in line:
+                    if target.lower() == char.lower():
+                        count += 1
+    return count
 
 
 # Question3
@@ -79,8 +85,33 @@ def randomize(*args):
     >>> randomize()
     ''
     """
-    # Your code here
-    return None
+    output = ''
+    for arg in args:
+        if isinstance(arg, str):
+            if len([i for i in arg if i.isalpha()]) == 0:
+                output = arg + output
+            elif all([i.isupper() for i in arg if i.isalpha()]):
+                output = arg[:int(len(arg) / 2)] + output
+            elif all([i.islower() for i in arg if i.isalpha()]):
+                output = arg[0] + arg[len(arg) - 1] + output
+            else:
+                output = arg + output
+        elif isinstance(arg, bool):
+            if arg:
+                output = '1' + output
+            else:
+                output = '0' + output
+        elif isinstance(arg, int):
+            if arg % 2 == 0:
+                output = str(arg + 2) + output
+            else:
+                output = str((arg ** 2) + 3) + output
+        elif isinstance(arg, float):
+            if arg < 0:
+                output = str(abs(arg)) + output
+            else:
+                output = (str(int(arg))) + output
+    return output
 
 
 # Question4
@@ -102,8 +133,20 @@ Billy=[54, 34, 29, 91, 98, 82])
 Bob=[30, 60], Joe=[10])
     {'Bob': 45.0, 'Joe': 10.0}
     """
-    # Your code here
-    return None
+    jumps = []
+    max = 0
+    avg = 0
+    point_list = []
+    
+    for name, points in kwargs.items():
+        max = -999999999
+        avg = sum(points) / len(points)
+        for func in args:
+            point_list = list(map(func, points))
+            if max < (sum(point_list) / len(point_list)) - avg:
+                max = round(sum(point_list) / len(point_list) - avg, 1)
+        jumps.append((name, max))
+    return dict(jumps)
 
 
 # Question5
@@ -134,8 +177,10 @@ def ingredient_checker(ing, **kwargs):
     >>> ingredient_checker('Kiwi')
     []
     """
-    # Your code here
-    return None
+    checker = []
+    for keys, values in kwargs.items():
+        checker.append((keys, ing in values))
+    return checker
 
 
 # Question6
@@ -183,6 +228,12 @@ def check_consideration(*args, **kwargs):
     AssertionError
 
     """
-    # Your code here
-    return None
+    assert len(args) == len(kwargs)
+    assert all([len(values) != 0 for _, values in kwargs.items()])
+    items = list(enumerate(kwargs.items()))
+    eligible = []
+    for i in range(len(args)):
+        if (sum(items[i][1][1]) / len(items[i][1][1]) >= args[i][0] - args[i][1]) and sum(items[i][1][1]) / len(items[i][1][1]) <= args[i][0] + args[i][1]:
+            eligible.append(items[i][1][0])
+    return eligible
 
