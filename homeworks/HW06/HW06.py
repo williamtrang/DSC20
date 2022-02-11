@@ -1,7 +1,7 @@
 """
 DSC20 WI22 HW06
-Name: TODO
-PID:  TODO
+Name: William Trang
+PID: A16679845
 """
 
 # Question 1
@@ -48,7 +48,9 @@ def find_the_word(lst, word):
     # Add AT LEAST 3 doctests below, DO NOT delete this line
 
     """
-    return
+    if len(lst) <= 1:
+        return int(word in lst)
+    return find_the_word([lst[0]], word) + find_the_word(lst[1:], word)
 
 
 #Question3.1
