@@ -152,4 +152,9 @@ def where_to_go(point1, point2, separator):
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     """
-    return
+    if point1 < point2:
+        return str(point1) + separator + where_to_go(point1 + 1, point2, separator)
+    elif point2 < point1:
+        return str(point1) + separator + where_to_go(point1 - 1, point2, separator)
+    elif point2 == point1:
+        return str(point1)
