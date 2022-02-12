@@ -18,7 +18,7 @@ def complexity_mc():
     True
     """
     # REPLACE ... WITH YOUR ANSWERS (1-9, duplicates allowed) #
-    return [...]
+    return 
 
 
 #Question2
@@ -70,7 +70,11 @@ def corrupt_string(input, to_insert):
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     """
-    return
+    if len(input) == 0:
+        return input
+    elif len(input) == 1:
+        return input + to_insert
+    return corrupt_string(input[0], to_insert) + corrupt_string(input[1:], to_insert)
 
 
 # Question 3.2
@@ -95,7 +99,13 @@ def corrupt_list(lst, word, to_insert):
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     """
-    return
+    if len(lst) <= 1:
+        try:
+            if lst[0] == word:
+                return [corrupt_string(word, to_insert)]
+        except:
+            return []
+    return [corrupt_list([lst[0]], word, to_insert) + corrupt_list([lst[1:], word, to_insert])]
 
             
 #Question4
@@ -116,7 +126,12 @@ def corrupt_with_vowels(input):
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     """
-    return
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    if len(input) <= 1:
+        if input.lower() in vowels:
+            return ''
+        return input
+    return corrupt_with_vowels(input[0]) + corrupt_with_vowels(input[1:])
 
 
 
