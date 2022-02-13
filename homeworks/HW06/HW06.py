@@ -14,7 +14,7 @@ def complexity_mc():
     True
     >>> len(answers)
     10
-    >>> all([isinstance(ans, int) and 1 <= ans <= 8 for ans in answers])
+    >>> all([isinstance(ans, int) and 1 <= ans <= 9 for ans in answers])
     True
     """
     # REPLACE ... WITH YOUR ANSWERS (1-9, duplicates allowed) #
@@ -51,7 +51,8 @@ def find_the_word(lst, word):
     0
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
-
+    >>> find_the_word(['foo', 'FOO', 'food', 'Foo', 'foo'], 'foo')
+    2
     """
     if len(lst) <= 1:
         return int(word in lst)
@@ -61,10 +62,15 @@ def find_the_word(lst, word):
 #Question3.1
 def corrupt_string(input, to_insert):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Takes in a base string input and another string to_insert.
+    Corrupts the base string by making it so each character is
+    followed by the string in to_insert and returns.
+
+    Parameters:
+        input: Base string that will be corrupted/modified.
+        to_insert: String that is used to corrupt the base string.
+    Returns:
+        String input that has been corrupted by to_insert.
 
     >>> corrupt_string('tickets', '#')
     't#i#c#k#e#t#s#'
@@ -74,6 +80,8 @@ def corrupt_string(input, to_insert):
     'b-u-y- -n-o-w-'
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> corrupt_string('foo', 'bar')
+    'fbarobarobar'
     """
     if len(input) == 0:
         return input
@@ -85,11 +93,19 @@ def corrupt_string(input, to_insert):
 # Question 3.2
 def corrupt_list(lst, word, to_insert):
     """
+    Takes in a list of strings, a string word to look for, and
+    a string to_insert that will be used to corrupt instances
+    of word in the list. Corrupts the strings in the list
+    that are equal to word by adding to_insert after every
+    character and returns the list.
 
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Parameters:
+        lst: List of strings that will be corrupted.
+        word: Word that will be corrupted in the list.
+        to_insert: String that is used to corrupt the matching
+        words in the list.
+    Returns:
+        List of strings with strings equal to word being corrupted.
 
     >>> corrupt_list(['tickets'], 'tickets','#')
     ['t#i#c#k#e#t#s#']
@@ -103,6 +119,14 @@ def corrupt_list(lst, word, to_insert):
     ['e-ticket', 'TiCkeTs']
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> corrupt_list(['foo', 'food', 'Foo', 'foo'], 'foo', '1')
+    ['f1o1o1', 'food', 'Foo', 'f1o1o1']
+
+    >>> corrupt_list(['foo', 'food', 'Foo', 'foo', '', 'fooD'], 'foo', '1')
+    ['f1o1o1', 'food', 'Foo', 'f1o1o1', '', 'fooD']
+
+    >>> corrupt_list(['', 'Foo', ''], '', ',')
+    ['', 'Foo', '']
     """
     if len(lst) <= 1:
         try:
@@ -117,11 +141,14 @@ def corrupt_list(lst, word, to_insert):
 #Question4
 def corrupt_with_vowels(input):
     """
+    Takes in a base string input. Returns a
+    string that has been corrupted by removing all
+    the vowels (a, e, i, o, u) from it.
 
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Parameters:
+        input: Base string that will be corrupted.
+    Returns:
+        String input with all vowels removed.
 
     >>> corrupt_with_vowels('buy and sell')
     'by nd sll'
@@ -131,6 +158,8 @@ def corrupt_with_vowels(input):
     ' '
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> corrupt_with_vowels('')
+    ''
     """
     vowels = ['a', 'e', 'i', 'o', 'u']
     if len(input) <= 1:
@@ -140,14 +169,20 @@ def corrupt_with_vowels(input):
     return corrupt_with_vowels(input[0]) + corrupt_with_vowels(input[1:])
 
 
-
 #Question 5
 def where_to_go(point1, point2, separator):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Takes in two integers, point1 and point2, and a string separator.
+    Returns all the integers between point1 and point2 with the
+    string separator separating each integer.
+
+    Parameters:
+        point1: Starting point/integer.
+        point2: Ending point/integer.
+        separator: String to separate each integer with.
+    Returns:
+        String containing all integers between and including
+        point1 and point2 separated by separator string.
 
     >>> where_to_go(17, 17, 'left')
     '17'
@@ -157,6 +192,11 @@ def where_to_go(point1, point2, separator):
     '8->7->6->5->4->3->2->1'
 
     # Add AT LEAST 3 doctests below, DO NOT delete this line
+    >>> where_to_go(1, 5, '')
+    '12345'
+
+    >>> where_to_go(1, 5, 'nft')
+    '1nft2nft3nft4nft5'
     """
     if point1 < point2:
         return str(point1) + separator + where_to_go(point1 + 1, point2, separator)
