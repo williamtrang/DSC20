@@ -24,10 +24,15 @@ def complexity_mc():
 #Question2
 def find_the_word(lst, word):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Takes in input of a list and a string to look for,
+    and returns the amount of times the string shows up
+    in the list.
+
+    Parameters:
+        lst: Given list to search through.
+        word: Word to search for in lst.
+    Returns:
+        Amount of times word shows up in lst.
 
     >>> find_the_word(["tickets"], "tickets")
     1
@@ -102,10 +107,11 @@ def corrupt_list(lst, word, to_insert):
     if len(lst) <= 1:
         try:
             if lst[0] == word:
-                return [corrupt_string(word, to_insert)]
+                return [corrupt_string(lst[0], to_insert)]
+            return [lst[0]]
         except:
             return []
-    return [corrupt_list([lst[0]], word, to_insert) + corrupt_list([lst[1:], word, to_insert])]
+    return corrupt_list([lst[0]], word, to_insert) + corrupt_list(lst[1:], word, to_insert)
 
             
 #Question4
