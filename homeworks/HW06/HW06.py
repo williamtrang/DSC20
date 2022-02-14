@@ -17,11 +17,10 @@ def complexity_mc():
     >>> all([isinstance(ans, int) and 1 <= ans <= 9 for ans in answers])
     True
     """
-    # REPLACE ... WITH YOUR ANSWERS (1-9, duplicates allowed) #
-    return 
+    return [3, 9, 1, 3, 5, 2, 6, 3, 7, 4]
 
 
-#Question2
+# Question2
 def find_the_word(lst, word):
     """
     Takes in input of a list and a string to look for,
@@ -53,13 +52,19 @@ def find_the_word(lst, word):
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     >>> find_the_word(['foo', 'FOO', 'food', 'Foo', 'foo'], 'foo')
     2
+
+    >>> find_the_word(['bulbasaur', 'ivysaur', 'venusaur'], '')
+    0
+
+    >>> find_the_word(['x', 'xx', 'x' ,'xx', 'xx', 'xx', 'x'], 'x')
+    3
     """
     if len(lst) <= 1:
         return int(word in lst)
     return find_the_word([lst[0]], word) + find_the_word(lst[1:], word)
 
 
-#Question3.1
+# Question3.1
 def corrupt_string(input, to_insert):
     """
     Takes in a base string input and another string to_insert.
@@ -82,12 +87,19 @@ def corrupt_string(input, to_insert):
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     >>> corrupt_string('foo', 'bar')
     'fbarobarobar'
+
+    >>> corrupt_string('pokemon', '')
+    'pokemon'
+
+    >>> corrupt_string(' frog!', '-')
+    ' -f-r-o-g-!-'
     """
     if len(input) == 0:
         return input
-    elif len(input) == 1:
+    if len(input) == 1:
         return input + to_insert
-    return corrupt_string(input[0], to_insert) + corrupt_string(input[1:], to_insert)
+    return corrupt_string(input[0], to_insert) + \
+        corrupt_string(input[1:], to_insert)
 
 
 # Question 3.2
@@ -133,12 +145,13 @@ def corrupt_list(lst, word, to_insert):
             if lst[0] == word:
                 return [corrupt_string(lst[0], to_insert)]
             return [lst[0]]
-        except:
+        except IndexError:
             return []
-    return corrupt_list([lst[0]], word, to_insert) + corrupt_list(lst[1:], word, to_insert)
+    return corrupt_list([lst[0]], word, to_insert) + \
+        corrupt_list(lst[1:], word, to_insert)
 
-            
-#Question4
+
+# Question4
 def corrupt_with_vowels(input):
     """
     Takes in a base string input. Returns a
@@ -160,6 +173,15 @@ def corrupt_with_vowels(input):
     # Add AT LEAST 3 doctests below, DO NOT delete this line
     >>> corrupt_with_vowels('')
     ''
+
+    >>> corrupt_with_vowels('glyph')
+    'glyph'
+
+    >>> corrupt_with_vowels('oiaueoieoeaoieoiIIOAIOEI')
+    ''
+
+    >>> corrupt_with_vowels('EIAUIEUIAiO OOOOO!O')
+    ' !'
     """
     vowels = ['a', 'e', 'i', 'o', 'u']
     if len(input) <= 1:
@@ -169,7 +191,7 @@ def corrupt_with_vowels(input):
     return corrupt_with_vowels(input[0]) + corrupt_with_vowels(input[1:])
 
 
-#Question 5
+# Question 5
 def where_to_go(point1, point2, separator):
     """
     Takes in two integers, point1 and point2, and a string separator.
@@ -197,10 +219,18 @@ def where_to_go(point1, point2, separator):
 
     >>> where_to_go(1, 5, 'nft')
     '1nft2nft3nft4nft5'
+
+    >>> where_to_go(-5, 0, ' ')
+    '-5 -4 -3 -2 -1 0'
+
+    >>> where_to_go(-5, 0, '!')
+    '-5!-4!-3!-2!-1!0'
     """
     if point1 < point2:
-        return str(point1) + separator + where_to_go(point1 + 1, point2, separator)
+        return str(point1) + separator + \
+            where_to_go(point1 + 1, point2, separator)
     elif point2 < point1:
-        return str(point1) + separator + where_to_go(point1 - 1, point2, separator)
+        return str(point1) + separator + \
+            where_to_go(point1 - 1, point2, separator)
     elif point2 == point1:
         return str(point1)
