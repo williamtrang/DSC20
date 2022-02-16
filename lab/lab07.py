@@ -57,7 +57,12 @@ class Winter_Olympics:
     'Sunday, February 20'
     """
 
-    # YOUR CODE GOES HERE #
+    mascot = 'Bing Dwen Dwen'
+
+    def starts():
+        return 'Friday, February 4'
+    def ends():
+        return 'Sunday, February 20'
 
 
 # Question 3
