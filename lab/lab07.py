@@ -37,7 +37,7 @@ class Mascot:
         self.event = event
 
     def sing_song(self, song):
-        return self.nickname + '\'' + song + '\'' + ' at ' + self.event
+        return self.nickname + ' sings ' '\'' + song + '\'' + ' at ' + self.event
 
     def change_nickname (self, new_name):
         self.nickname = new_name
@@ -95,47 +95,57 @@ class Phone:
     4000
     """
     # Initializer
-    def ******(self, brand, ******, ******):
+    def __init__ (self, brand, battery, storage):
         self.brand = brand
-        self.battery = ******
-        self.storage = ******
-        self.charge = ******
+        self.battery = battery
+        self.storage = storage
+        self.charge = battery // 2
         # Drain rate will differ based on brand
         # Create if-else structure
-        self.drain_rate = ******
-        self.charge_rate = ******
-        self.num_apps = ******
+        if self.brand == 'Apple':
+            self.drain_rate = 10
+        elif self.brand == 'OnePlus':
+            self.drain_rate = 12
+        elif self.brand == 'Samsung':
+            self.drain_rate = 8
+        else:
+            self.drain_rate = 15
+        
+        self.charge_rate = 20
+        self.num_apps = 0
         self.apps = set()
 
     def use(self, minutes):
         # TODO: Update charge
-        self.****** = ******
-        if ******: # Handles case when we run out of charge
-            ******
+        self.charge = self.charge - self.drain_rate * minutes
+        if self.charge <= 0: # Handles case when we run out of charge
+            self.charge = 0
             return 'Out of charge'
 
     def recharge(self, minutes):
         # TODO: Update charge
-        ******.****** = ******
+        self.charge = self.charge + self.charge_rate * minutes
+        if self.charge > self.battery:
+            self.charge = self.battery
 
     def install(self, app_size, app_name):
         # Cannot install apps when we don't have charge
-        if ******:
+        if self.charge == 0:
             return 'Out of charge'
         # Cannot install apps when we don't have sufficient storage
-        if ******:
+        if app_size > self.storage:
             return 'Not enough storage'
         # Cannot install apps that are already installed
-        if ******:
+        if app_name in self.apps:
             return 'App already installed'
 
         # Have dealt with all potential issues. Install app now
         # TODO: Update storage
-        ******
+        self.storage -= app_size
         # TODO: Update num_apps
-        ******
+        self.num_apps += 1
         # TODO: Update apps
-        ******
+        self.apps.add(app_name)
         return 'App installed'
 
 # Question 4
@@ -196,5 +206,5 @@ def find_winner(record, find_max=True):
 # Recursive function. Think, what does it return?
 def find_winner_helper(record, find_max):
     # add your own doct tests to check correctness. 
-
+    return None
 
