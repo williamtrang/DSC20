@@ -28,19 +28,19 @@ class Mascot:
     >>> mascot2.nickname
     'The Olympic Mishka'
     """
-    brings = *****
+    brings = 'Luck'
     
     # Initializer (Constructor) / Instance Attributes
-    def *****(*****, color, nickname, event):
-        *****.***** = color
-        self.***** = nickname
-        *****.***** = *****
+    def __init__ (self, color, nickname, event):
+        self.color = color
+        self.nickname = nickname
+        self.event = event
 
     def sing_song(self, song):
-        return *****
+        return self.nickname + '\'' + song + '\'' + ' at ' + self.event
 
-    def change_nickname (*****, new_name):
-        *****.***** = *****
+    def change_nickname (self, new_name):
+        self.nickname = new_name
 
 
 # Question 2
