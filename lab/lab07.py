@@ -166,8 +166,9 @@ def max_recursion(tup):
     >>> max_recursion((13,2,33,4))
     33
     """
-
-    # Your code is here
+    if len(tup) == 1:
+        return tup[0]
+    return tup[0] if tup[0] > max_recursion(tup[1:]) else max_recursion(tup[1:])
 
 # Question 5
 
@@ -183,8 +184,9 @@ def max_or_min_recursion(tup, find_max = True):
     >>> max_or_min_recursion((13,2,33,-4), True)
     33
     """
-
-    # Your code is here
+    if len(tup) == 1:
+        return tup[0]
+    return tup[0] if tup[0] < max_or_min_recursion(tup[1:], find_max) and not find_max else tup[0] if tup[0] > max_or_min_recursion(tup[1:], find_max) and find_max else max_or_min_recursion(tup[1:], find_max)
 
 # Question 6
 
@@ -202,7 +204,10 @@ def find_winner(record, find_max=True):
     'France'
     """
     # Your code is here
-    
+    if isinstance(record, tuple):
+        return record[0]
+    return find_winner(record[0])
+    #return record[0] if find_winner(record[0], find_max)[1] < find_winner(record[1:], find_max)[1] and find_max else record[0] if find_winner(record[0], find_max)[1] > find_winner(record[1:], find_max)[1] and not find_max else find_winner(record[1:], find_max)
     # somewhere here you may want to use a call to a helper recursive function:
     # find_winner_helper(record, find_max)
 
