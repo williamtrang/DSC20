@@ -1,7 +1,7 @@
 """
 DSC 20 Homework 08
-Name: TODO
-PID:  TODO
+Name: William Trang
+PID: A16679845
 """
 
 # Question 1
@@ -22,8 +22,9 @@ def from_list_to_dict(lst):
     # Add at least 3 doctests below #
 
     """
-    # YOUR CODE GOES HERE #
-    return
+    #if len(lst) == 1:
+
+    return dict(lst)
 
 
 # Question 2
@@ -47,8 +48,15 @@ def make_two_dicts(str1, str2, key1, key2):
     # Add at least 3 doctests below #
 
     """
-    # YOUR CODE GOES HERE #
-    return
+    lst1 = []
+    lst2 = []
+    if len(str1) == 1:
+        if str1 in str2:
+            return lst1.append(str1), lst2
+        else:
+            return lst1, lst2.append(str1)
+
+    return make_two_dicts(str1[0], str2, key1, key2), make_two_dicts(str1[1:], str2, key1, key2)
 
 
 # Question 3
@@ -77,7 +85,7 @@ def dict_decompose(d):
 
     """
     # YOUR CODE GOES HERE #
-    return
+    return list(d), list(d)
 
 
 # Question 4
@@ -130,7 +138,10 @@ class Smurf:
             smurf_berry (int): number of smurf_berry the smurf holds
             experience (int): total experience of a certain smurf
         """
-        # YOUR CODE STARTS HERE #
+        self.age = age
+        self.coin = coin
+        self.smurf_berry = smurf_berry
+        self.experience = experience
 
 
     def grow_plant(self, cost):
@@ -139,7 +150,10 @@ class Smurf:
         the plant. If successful, deduct the cost of the plant from coin.
         Otherwise, return False
         """
-        # YOUR CODE STARTS HERE #
+        if cost <= self.coin:
+            self.coin -= cost
+            return True
+        return False
 
     
     def make_deal(self, other_smurf, val_item):
@@ -148,7 +162,20 @@ class Smurf:
         of coins. If you don't have enough coins, attempt to use smurf berries.
         Return True if the deal is successful, and False otherwise.
         """
-        # YOUR CODE STARTS HERE #
+        berry_to_coins = 10
+        if self.coin >= val_item:
+            self.coin -= val_item
+            other_smurf.coin += val_item
+            return True
+        elif self.smurf_berry * berry_to_coins >= val_item:
+            val_berry = val_item / berry_to_coins
+            if int(val_berry) != val_berry:
+                val_berry = int(val_berry) + 1
+
+            self.smurf_berry -= val_berry
+            other_smurf.smurf_berry += val_berry
+            return True
+        return False
     
 
     def harvest(self, cost, revenue, experience):
@@ -158,7 +185,11 @@ class Smurf:
         and return True.
         If not, return False
         """
-        # YOUR CODE STARTS HERE #
+        if self.grow_plant(cost):
+            self.coin += revenue
+            self.experience += experience
+            return True
+        return False
 
             
     def count_level(self):
@@ -167,7 +198,9 @@ class Smurf:
         Each level is based on experience in blocks of 5
         Return the string 'Your smurf is at level x', where x is the level
         """
-        # YOUR CODE STARTS HERE #
+        xp_per_level = 5
+        level = int(self.experience / xp_per_level) + 1
+        return 'Your smurf is at level ' + str(level)
 
 class Common_Smurf(Smurf):
     """
@@ -181,7 +214,10 @@ class Common_Smurf(Smurf):
         However, if you meet a Papa Smurf, you lose all your coins and return
         the string 'Papa Smurf caught you!'
         """
-        # YOUR CODE STARTS HERE #
+        if isinstance(other_smurf, PaPa_Smurf):
+            self.coin = 0
+            return 'Papa Smurf caught you!'
+        return super().make_deal(other_smurf, val_item)
     
 class PaPa_Smurf(Smurf):
     """
@@ -193,7 +229,9 @@ class PaPa_Smurf(Smurf):
         Each level is based on experience + age in blocks of 5
         Return the string 'Your smurf is at level x', where x is the level
         """
-        # YOUR CODE STARTS HERE #
+        xp_per_level = 5
+        level = int((self.experience + self.age) / xp_per_level) + 1
+        return 'Your smurf is at level ' + str(level)
 
 
 # Question 5
@@ -241,50 +279,86 @@ def q5_doctests():
 class Kart:
 
     def __init__(self):
-        # YOUR CODE STARTS HERE #
+        self.speed = 50
+        self.size = 5
+        self.powerup = 3
+        self.lives = 3
         return
     
     def nitro(self, boost):
-        # YOUR CODE STARTS HERE #
-        return
+        if self.powerup == 0:
+            return False
+        self.powerup -= 1
+        orig_score = self.high_score()
+        self.speed = int((((self.speed + boost) ** 2) + ((self.speed - boost) ** 2)) ** (1/2))
+        new_score = self.high_score()
+        if new_score >= orig_score * 2:
+            self.lives += 1
+        return True
         
     
     def set_speed(self, new_speed):
-        # YOUR CODE STARTS HERE #
-        return
+        self.speed = new_speed
         
     
     def set_lives(self, gains = True):
-        # YOUR CODE STARTS HERE #
-        return
+        if gains:
+            self.lives += 1
+        else:
+            self.lives -= 1
         
             
     def set_size(self, new_size):
-        # YOUR CODE STARTS HERE #
-        return
+        self.size = new_size
         
         
     def attack(self, other_kart):
-        # YOUR CODE STARTS HERE #
-        return
+        speed_increment = 50
+
+        if self.size > other_kart.size:
+            self.speed += speed_increment
+            other_kart.speed -= speed_increment
+            if other_kart.speed < 0:
+                other_kart.speed = speed_increment
+                other_kart.lives -= 1
+                self.size += 1
+            return True
+        elif self.size < other_kart.size:
+            other_kart.speed += speed_increment
+            self.speed -= speed_increment
+            if self.speed < 0:
+                self.speed = speed_increment
+                self.lives -= 1
+                other_kart.size += 1
+        return False
         
     
     def high_score(self):
-        # YOUR CODE STARTS HERE #
-        return
+        speed_mult = 100
+        lives_mult = 500
+        return  self.speed * speed_mult + self.lives * lives_mult
     
 class NormalKart(Kart):
 
     def attack(self, other_kart):
-        # YOUR CODE STARTS HERE #
-        return
+        if isinstance(other_kart, CheaterKart):
+            self.lives -= 1
+            self.speed = 30
+            other_kart.size += 1
+            other_kart.speed += 50
+            return False
+        return super().attack(other_kart)
         
 class CheaterKart(Kart):
 
     def __init__(self):
-        # YOUR CODE STARTS HERE #
-        return
+        self.speed = 70
+        self.size = 7
+        self.powerup = 5
+        self.lives = 5
         
     def high_score(self):
-        # YOUR CODE STARTS HERE #
-        return
+        speed_mult = 200
+        lives_mult = 300
+        score_mod = 250
+        return self.speed * speed_mult + self.lives * lives_mult + score_mod
