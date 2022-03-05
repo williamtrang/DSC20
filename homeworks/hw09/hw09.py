@@ -1,8 +1,8 @@
 
 """
 DSC 20 Homework 09
-Name: TODO
-PID:  TODO
+Name: William Trang
+PID:  A16679845
 """
 
 
@@ -35,8 +35,26 @@ def maze(coord, map):
     # Add more tests
 
     """
-    
-    # Your code is here
+    treasure_loc = (0, 0)
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            if map[i][j] == '*':
+                treasure_loc = (i, j)
+
+    if len(map) == 1:
+        for i in map[0]:
+            if coord == treasure_loc:
+                return 'treasure!'
+            if i == 'R':
+                coord = (coord[0] + 1, coord[1])
+            elif i == 'L':
+                coord = (coord[0] - 1, coord[1])
+            elif i == 'U':
+                coord = (coord[0], coord[1] - 1)
+            elif i == 'D':
+                coord = (coord[0], coord[1] + 1)
+    return maze(coord, map[0]) + maze(coord, map[1:])
+            
 
 # Question 2
 def binary_search(target, arr, left, right):
@@ -66,8 +84,15 @@ def binary_search(target, arr, left, right):
 
     """
 
-    # Your code is here
-
+    mid = int((left + right) / 2)
+    if target == arr[mid]:
+        return arr[left:right]
+    elif target > arr[mid]:
+        return binary_search(target, arr, mid + 1, right)
+    elif target < arr[mid]:
+        return binary_search(target, arr, left, mid - 1)
+    else:
+        return [[]]
 
 
 
@@ -89,7 +114,10 @@ def fix_1(lst1, lst2):
     out = []
     for div in lst2:
         for num in lst1:
-            out.append(num / div)  # add try-except block
+            try:
+                out.append(num / div)  # add try-except block
+            except ZeroDivisionError:
+                pass
     return out
 
 
@@ -108,8 +136,12 @@ def fix_2(*filepaths):
     docs.txt not found
     """
     for filepath in filepaths:
-        cur_file = open(filepath, "r")  # add try-except block
-        cur_file.close()
+        try:
+            cur_file = open(filepath, "r")
+            print(filepath + ' opened')
+            cur_file.close()
+        except FileNotFoundError:
+            print(filepath + ' not found')
 
 
 # Question 3.3
@@ -134,7 +166,12 @@ def fix_3(lst):
     """
     sum_of_pairs = []
     for i, _ in enumerate(lst):
-        sum_of_pairs.append(lst[i] + lst[i + 1])  # add try-except block
+        try:
+            sum_of_pairs.append(lst[i] + lst[i + 1])
+        except TypeError as error:
+            print(type(error))
+        except IndexError as error:
+            print(type(error))
     return sum_of_pairs
 
 
