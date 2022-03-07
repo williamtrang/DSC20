@@ -86,11 +86,11 @@ def binary_search(target, arr, left, right):
 
     mid = int((left + right) / 2)
     if target == arr[mid]:
-        return arr[left:right]
+        return arr[left:right + 1]
     elif target > arr[mid]:
-        return binary_search(target, arr, mid + 1, right)
+        return [] + binary_search(target, arr, mid + 1, right)
     elif target < arr[mid]:
-        return binary_search(target, arr, left, mid - 1)
+        return [] + binary_search(target, arr, left, mid - 1)
     else:
         return [[]]
 
@@ -207,7 +207,18 @@ def check_inputs(input1, input2):
     TypeError: input2 is not the correct type
     """
     
-    # Your code is here
+    if not isinstance(input1, list):
+        raise TypeError('input1 is not the correct type')
+
+    numeric = [isinstance(i, int) or isinstance(i, float) for i in input1]
+    if not all(numeric):
+        raise TypeError('The element at index ' + str(numeric.index(False)) + ' is not numeric')
+
+    if not type(input2) in [float, int]:
+        raise TypeError('input2 is not the correct type')
+    if input2 not in input1:
+        raise TypeError('input2 not in input1')
+    return 'Input validated'
 
 
 # Question 5
@@ -233,8 +244,19 @@ def load_file(filename):
     ...
     FileNotFoundError: files/nonexistant.txt does not exist
     """
-    
-    # Your code is here
+    try:
+        if not isinstance(filename, str):
+            raise TypeError('filename is not a string')
+        words = 0
+        with open(filename, 'r') as f:
+            for line in f:
+                word_line = line.split()
+                words += len(word_line)
+            if words == 0:
+                raise ValueError('File is empty')
+        return words
+    except FileNotFoundError:
+        raise FileNotFoundError(filename + ' does not exist')
 
 
 
