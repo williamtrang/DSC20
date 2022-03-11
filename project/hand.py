@@ -70,17 +70,17 @@ class PlayerHand():
     """
     
     def __init__(self):
-        ...
+        self.cards = []
         
     def add_card(self, *cards):
         """
         Adds cards to the hand, then sorts
         them in ascending order.
         """
-        ...
+        assert all([isinstance(card, Card) for card in cards])
 
     def get_cards(self):
-        ...            
+        return self.cards
 
     def __str__(self):
         """
