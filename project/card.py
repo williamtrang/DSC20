@@ -122,7 +122,19 @@ class Card:
         | ? |
         |__?|             
         """
-        ...
+        suit_symbols = {'diamonds': '♦',
+                        'clubs': '♣',
+                        'hearts': '♥',
+                        'spades': '♠'}
+
+        suit = suit_symbols[self.get_suit()]
+        rank = self.get_rank()
+        if not self.visible:
+            suit = '?'
+            rank = '?'
+
+        card = '____\n|' + rank + '  |\n| ' + suit + ' |\n|__' + rank + '|'
+        return card
 
     def __repr__(self):
         """
@@ -130,8 +142,8 @@ class Card:
         put in place of the actual rank and suit.           
         """        
         if self.visible:
-            return (self.get_rank(), self.get_suit())
-        return ('?', '?')
+            return '(' + str(self.get_rank()) + ', ' + str(self.get_suit()) + ')'
+        return '(?, ?)'
 
     def get_rank(self):
         return self.rank
