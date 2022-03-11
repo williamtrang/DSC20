@@ -41,8 +41,8 @@ def maze(coord, map):
             if map[i][j] == '*':
                 treasure_loc = (i, j)
 
-    if len(map) == 1:
-        for i in map[0]:
+    for j in map:
+        for i in j:
             if coord == treasure_loc:
                 return 'treasure!'
             if i == 'R':
@@ -53,7 +53,7 @@ def maze(coord, map):
                 coord = (coord[0], coord[1] - 1)
             elif i == 'D':
                 coord = (coord[0], coord[1] + 1)
-    return maze(coord, map[0]) + maze(coord, map[1:])
+    return 'sad'
             
 
 # Question 2
@@ -83,16 +83,15 @@ def binary_search(target, arr, left, right):
     # Add more tests
 
     """
-
-    mid = int((left + right) / 2)
-    if target == arr[mid]:
-        return arr[left:right + 1]
-    elif target > arr[mid]:
-        return [] + binary_search(target, arr, mid + 1, right)
-    elif target < arr[mid]:
-        return [] + binary_search(target, arr, left, mid - 1)
-    else:
+    if left > right:
         return [[]]
+    mid = (left + right) // 2
+    if target == arr[mid]:
+        return [arr[left:right + 1]]
+    elif target > arr[mid]:
+        return [arr[left:right + 1]] + binary_search(target, arr, mid + 1, right)
+    elif target < arr[mid]:
+        return [arr[left:right + 1]] + binary_search(target, arr, left, mid - 1)
 
 
 
@@ -181,7 +180,10 @@ def fix_3(lst):
 # Question 4
 def check_inputs(input1, input2):
     """
-    # TODO: Add method description and at least 3 new doctests #
+    Checks the inputs given to ensure that input1 is
+    a list of just numbers, input2 is a number, and input2
+    is within input1. Raises an exception if any of the
+    conditions are not true.
 
     >>> check_inputs([1, 2.0, 3.0, 4], 4)
     'Input validated'
@@ -205,6 +207,8 @@ def check_inputs(input1, input2):
     Traceback (most recent call last):
     ...
     TypeError: input2 is not the correct type
+
+    # MY DOCTESTS
     """
     
     if not isinstance(input1, list):
@@ -243,6 +247,20 @@ def load_file(filename):
     Traceback (most recent call last):
     ...
     FileNotFoundError: files/nonexistant.txt does not exist
+
+    # MY DOCTESTS
+    >>> load_file('files/adc.txt')
+    6
+
+    >>> load_file('adc.txt')
+    Traceback (most recent call last):
+    ...
+    FileNotFoundError: adc.txt does not exist
+
+    >>> load_file(True)
+    Traceback (most recent call last):
+    ...
+    TypeError: filename is not a string
     """
     try:
         if not isinstance(filename, str):
