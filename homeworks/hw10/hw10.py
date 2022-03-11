@@ -1,8 +1,8 @@
 
 """
 DSC 20 Homework 10
-Name: TODO
-PID:  TODO
+Name: William Trang
+PID:  A16679845
 """
 
 from util import Stack, Queue
