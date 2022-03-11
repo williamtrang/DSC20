@@ -61,12 +61,51 @@ class Card:
         """
         Creates a card instance and asserts that the rank and suit are valid.
         """
-        ...
+        assert isinstance(rank, (int, str))
+        assert isinstance(suit, str)
+        assert isinstance(visible, bool)
+        
+        suits = ['diamonds', 'clubs', 'hearts', 'spades']
+        royals = ['J', 'Q', 'K', 'A']
+        min_num = 2
+        max_num = 10
+        all_ranks = [i for i in range(min_num, max_num + 1)] + royals
+
+        assert suit in suits
+        assert rank in all_ranks
+
+        self.rank = rank
+        self.suit = suit
+        self.visible = visible
         
 
     def __lt__(self, other_card):
-        ...
+        suit_vals = {'clubs': 1,
+                    'diamonds': 2,
+                    'hearts': 3,
+                    'spades': 4}
+        
+        rank_vals = {2: 2,
+                    3: 3,
+                    4: 4,
+                    5: 5,
+                    6: 6,
+                    7: 7,
+                    8: 8,
+                    9: 9,
+                    10: 10,
+                    'J': 11,
+                    'Q': 12,
+                    'K': 13,
+                    'A': 14}
 
+        if suit_vals[self.get_suit()] < suit_vals[other_card.get_suit()]:
+            return True
+        elif suit_vals[self.get_suit()] == suit_vals[other_card.get_suit()]:
+            if rank_vals[self.get_rank()] < rank_vals[other_card.get_rank()]:
+                return True
+            return False
+        return False
 
     def __str__(self):
         """
@@ -90,14 +129,17 @@ class Card:
         Returns (<rank>, <suit>). If the card is hidden, question marks are
         put in place of the actual rank and suit.           
         """        
-        ...
+        if self.visible:
+            return (self.get_rank(), self.get_suit())
+        return ('?', '?')
 
     def get_rank(self):
-        ...
+        return self.rank
     
     def get_suit(self):
-        ...
+        return self.suit
 
     def set_visible(self, visible):
-        ...
+        assert isinstance(visible, bool)
+        self.visible = visible
     
