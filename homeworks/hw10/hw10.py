@@ -31,7 +31,7 @@ def parentheses_checker(expression):
     # Add at least 3 doctests below #
     
     """
-    # YOUR CODE GOES HERE #
+    stack = Stack()
     
 
 
@@ -58,9 +58,26 @@ def run_around(n, m):
     TypeError: Invalid input data type.
 
     # Add at least 3 doctests below #
-    
+    >>> run_around(5., 1)
+    Traceback (most recent call last):
+    ...
+    TypeError: Invalid input data type.
     """
-    # YOUR CODE GOES HERE #
+    if (not isinstance(n, int)) or (not isinstance(m, int)):
+        raise TypeError('Invalid input data type.')
+    if (m <= 0) or (n <= 0):
+        raise ValueError('m and n should be positive!')
+
+    queue = Queue()
+    for i in range(1, n + 1):
+        queue.enqueue(i)
+    
+    while queue.size() > 0:
+        for i in range(m):
+            if i == m - 1:
+                print(queue.dequeue())
+            else:
+                queue.enqueue(queue.dequeue())
 
    
 # Question 3 (extra credit, you are on your own)
@@ -68,17 +85,16 @@ def run_around(n, m):
 def choices_choices(candidate, pattern, possibility):
     """
     Append all possible words to possibility list
-​
     >>> p = []
     >>> choices_choices(['t','p','h'], "_ower", p)
     >>> p
     ['tower', 'power', 'hower']
-​
+
     >>> p = []
     >>> choices_choices(['w','c','d'], "_o_er", p)
     >>> p
     ['wocer', 'woder', 'cower', 'coder', 'dower', 'docer']
-​
+
     >>> p = []
     >>> choices_choices(['w','c','d'], "coder", p)
     >>> p
