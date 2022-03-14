@@ -1,0 +1,5 @@
+Monday,p1,70
+Monday,p3,90
+Wednesday,p4,46
+Friday,p5,10
+Friday,p7,44

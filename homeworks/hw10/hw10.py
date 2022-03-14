@@ -10,10 +10,16 @@ from util import Stack, Queue
 # Question 1
 def parentheses_checker(expression):
     """
-    ##############################################################
-    # TODO: Replace this block of comments with your own         #
-    # method description and add at least 3 more doctests below. #
-    ##############################################################
+    Checks if given string expression has closing
+    parentheses for every opening parentheses and vice
+    versa. Return True if it only has pairs of parentheses
+    that line up and False if not.
+
+    Parameters:
+        expression: Given string input to check for parentheses.
+    Returns:
+        True if all opening parentheses are matched by the same
+        kind of closing parentheses and vice versa.
 
     >>> parentheses_checker("(((]})")
     False
@@ -29,10 +35,43 @@ def parentheses_checker(expression):
     True
 
     # Add at least 3 doctests below #
-    
+    >>> parentheses_checker("((((())))")
+    False
+
+    >>> parentheses_checker("[[[(((]]]")
+    False
+
+    >>> parentheses_checker("[][][]()(){}{}{)")
+    False
+
+    >>> parentheses_checker("(daimyo)")
+    True
     """
-    stack = Stack()
-    
+    opening = ['(', '[', '{']
+    closing = [')', ']', '}']
+    classification = {'(': 'paren',
+                    ')': 'paren',
+                    '{': 'brace',
+                    '}': 'brace',
+                    '[': 'bracket',
+                    ']': 'bracket'}
+
+    opening_stack = Stack()
+
+    for i in expression:
+        if i in opening:
+            opening_stack.push(i)
+        if i in closing:
+            if opening_stack.size() == 0:
+                return False
+            if classification[opening_stack.peek()] == classification[i]:
+                opening_stack.pop()
+            else:
+                return False
+
+    if opening_stack.size() != 0:
+        return False
+    return True
 
 
 # Question 2
@@ -62,6 +101,31 @@ def run_around(n, m):
     Traceback (most recent call last):
     ...
     TypeError: Invalid input data type.
+
+    >>> run_around(8, 3)
+    3
+    6
+    1
+    5
+    2
+    8
+    4
+    7
+
+    >>> run_around(8, 4)
+    4
+    8
+    5
+    2
+    1
+    3
+    7
+    6
+
+    >>> run_around(0, 2)
+    Traceback (most recent call last):
+    ...
+    ValueError: m and n should be positive!
     """
     if (not isinstance(n, int)) or (not isinstance(m, int)):
         raise TypeError('Invalid input data type.')
@@ -71,7 +135,7 @@ def run_around(n, m):
     queue = Queue()
     for i in range(1, n + 1):
         queue.enqueue(i)
-    
+
     while queue.size() > 0:
         for i in range(m):
             if i == m - 1:
@@ -79,7 +143,7 @@ def run_around(n, m):
             else:
                 queue.enqueue(queue.dequeue())
 
-   
+
 # Question 3 (extra credit, you are on your own)
 
 def choices_choices(candidate, pattern, possibility):
@@ -101,9 +165,6 @@ def choices_choices(candidate, pattern, possibility):
     ['coder']
 
     # Add at least 3 doctests below #
-    
+
     """
     # YOUR CODE GOES HERE #
-
-
-
