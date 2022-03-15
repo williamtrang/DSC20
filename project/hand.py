@@ -78,6 +78,9 @@ class PlayerHand():
         them in ascending order.
         """
         assert all([isinstance(card, Card) for card in cards])
+        for card in cards:
+            self.cards.append(card)
+        self.sort_hand()
 
     def get_cards(self):
         return self.cards
@@ -87,20 +90,38 @@ class PlayerHand():
         Returns the string representation of all cards
         in the hand, with each card on a new line.
         """
-        ...
+        cards = ''
+        for card in self.cards:
+            cards += str(card) + '\n'
+        return cards.strip()
     
     def __repr__(self):
         """
         Returns the representation of all cards, with 
         each card separated by a space.
         """
-        ...
+        cards = ''
+        for card in self.cards:
+            cards += repr(card) + ' '
+        return cards.strip()
 
     def sort_hand(self):
         """
         Sorts the cards in ascending order.
         """
-        ...
+        if len(self.get_cards()) <= 1:
+            return
+
+        swapped = True
+        temp = ''
+        while swapped == True:
+            swapped = False
+            for i in range(len(self.get_cards()) - 1):
+                if self.cards[i] > self.cards[i + 1]:
+                    temp = self.cards[i]
+                    self.cards[i] = self.cards[i + 1]
+                    self.cards[i + 1] = temp
+                    swapped = True
         
     
 class DealerHand(PlayerHand):

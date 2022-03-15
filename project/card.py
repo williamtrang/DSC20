@@ -99,12 +99,11 @@ class Card:
                     'K': 13,
                     'A': 14}
 
-        if suit_vals[self.get_suit()] < suit_vals[other_card.get_suit()]:
+        if rank_vals[self.get_rank()] < rank_vals[other_card.get_rank()]:
             return True
-        elif suit_vals[self.get_suit()] == suit_vals[other_card.get_suit()]:
-            if rank_vals[self.get_rank()] < rank_vals[other_card.get_rank()]:
+        elif rank_vals[self.get_rank()] == rank_vals[other_card.get_rank()]:
+            if suit_vals[self.get_suit()] < suit_vals[other_card.get_suit()]:
                 return True
-            return False
         return False
 
     def __str__(self):
@@ -128,7 +127,7 @@ class Card:
                         'spades': '♠'}
 
         suit = suit_symbols[self.get_suit()]
-        rank = self.get_rank()
+        rank = str(self.get_rank())
         if not self.visible:
             suit = '?'
             rank = '?'
