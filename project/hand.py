@@ -129,7 +129,8 @@ class DealerHand(PlayerHand):
     def __init__(self):
         # This should inherit attributes from
         # the parent PlayerHand class.
-        ...
+        super().__init__()
+        self.hand_visible = False
 
     def add_card(self, *cards):
         """
@@ -138,14 +139,26 @@ class DealerHand(PlayerHand):
         If the dealer's hand is visible, then add cards to hand as 
         usual and sort them in ascending order.
         """
-        ...
+        assert all([isinstance(card, Card) for card in cards])
+        if self.hand_visible:
+            super().add_card(*cards)
+        else:
+            for card in cards:
+                self.cards.append(card)
+            for i in range(1, len(self.cards)):
+                self.cards[i].set_visible(False)
+        
     
     def reveal_hand(self):
         """
         Makes all the cards in the hand visible
         and sorts them in ascending order.
         """
-        ...
+        self.hand_visible = True
+        for i in range(len(self.cards)):
+            self.cards[i].set_visible(True)
+        self.sort_hand()
+
     
     
     

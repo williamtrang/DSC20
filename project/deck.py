@@ -21,12 +21,20 @@ class Deck:
     """
 
     # Class Attribute(s)
+    cards = []
 
     def __init__(self):
         """
         Creates a Deck instance containing cards sorted in ascending order.
         """
-        ...
+        suits = ['clubs', 'diamonds', 'hearts', 'spades']
+        royals = ['J', 'Q', 'K', 'A']
+        min_num = 2
+        max_num = 10
+        all_ranks = [i for i in range(min_num, max_num + 1)] + royals
+
+        all_cards = [[Card(rank, suit) for suit in suits] for rank in all_ranks]
+        [[self.cards.append(card) for card in lst] for lst in all_cards]
 
     def shuffle(self, **shuffle_and_count):
         """Shuffles the deck using a variety of different shuffles.
@@ -42,7 +50,7 @@ class Deck:
         """
         Takes the first card from the deck and adds it to `hand`.
         """
-        ...
+        assert isinstance(hand, (PlayerHand, DealerHand))
 
     def get_cards(self):
-        ...
+        return self.cards

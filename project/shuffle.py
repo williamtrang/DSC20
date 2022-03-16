@@ -16,6 +16,23 @@ class Shuffle:
     51
     >>> mongean_shuffle[26]
     25
+
+    #MY TESTS
+    >>> cards2 = [i for i in range(1, 5)]
+    >>> Shuffle.mongean(cards2)
+    [4, 2, 1, 3]
+
+    >>> cards3 = [i for i in range(1, 6)]
+    >>> Shuffle.modified_overhand(cards3, 2)
+    [1, 2, 3, 4, 5]
+
+    >>> cards4 = [1, 3, 2, 4, 5]
+    >>> Shuffle.modified_overhand(cards4, 2)
+    [1, 3, 2, 4, 5]
+
+    >>> cards5 = [3, 2, 1, 4]
+    >>> Shuffle.modified_overhand(cards5, 2)
+    [1, 2, 3, 4]
     """    
         
     def modified_overhand(cards, num):
@@ -29,8 +46,29 @@ class Shuffle:
         
         # Use Recursion.
         # Note that the top of the deck is the card at index 0.
+        assert isinstance(cards, list)
+        #assert all([isinstance(card, int) for card in cards])
+        assert isinstance(num, int)
+
+        if num == 0:
+            return cards
+
+        moved_cards = []
+        counter = num
+        mid = 0
+
+        while counter != 0:
+            if len(cards) % 2 == 0:
+                mid = (len(cards) // 2) - 1
+                moved_cards = [cards[mid]] + moved_cards
+            else:
+                mid = len(cards) // 2
+                moved_cards = moved_cards + [cards[mid]]
+            cards.pop(mid)
+            counter -= 1
         
-        ...
+        cards = moved_cards + cards
+        return Shuffle.modified_overhand(cards, num - 1)
                     
     
     def mongean(cards):
@@ -42,5 +80,11 @@ class Shuffle:
         # Remember that the "top" of the deck is the first item in the list.
         # Use Recursion. Can use helper functions.
         
-        ...
+        if len(cards) <= 1:
+            return cards
+        if len(cards) % 2 == 0:
+            return Shuffle.mongean([cards[len(cards) - 1]]) + Shuffle.mongean(cards[:len(cards) - 1])
+        else:
+            return Shuffle.mongean(cards[:len(cards) - 1]) + Shuffle.mongean([cards[len(cards) - 1]])
+        
     
