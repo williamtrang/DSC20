@@ -21,12 +21,12 @@ class Deck:
     """
 
     # Class Attribute(s)
-    cards = []
 
     def __init__(self):
         """
         Creates a Deck instance containing cards sorted in ascending order.
         """
+        self.cards = []
         suits = ['clubs', 'diamonds', 'hearts', 'spades']
         royals = ['J', 'Q', 'K', 'A']
         min_num = 2
@@ -44,13 +44,28 @@ class Deck:
             shuffle type and the number of times the shuffled
             should be called.
         """
-        ...
+        # TODO: ADD MORE ASSERTS
+        assert all([isinstance(v, int) for k, v in shuffle_and_count.items()])
+
+        if ('modified_overhand' in shuffle_and_count.keys()) and ('mongean' in shuffle_and_count.keys()):
+            self.cards = Shuffle.modified_overhand(self.cards, shuffle_and_count['modified_overhand'])
+            for _ in range(shuffle_and_count['mongean']):
+                self.cards = Shuffle.mongean(self.cards)
+        elif ('modified_overhand' in shuffle_and_count.keys()) and ('mongean' not in shuffle_and_count.keys()):
+            self.cards = Shuffle.modified_overhand(self.cards, shuffle_and_count['modified_overhand'])
+        else:
+            for _ in range(shuffle_and_count['mongean']):
+                self.cards = Shuffle.mongean(self.cards)
 
     def deal_hand(self, hand):
         """
         Takes the first card from the deck and adds it to `hand`.
         """
+        # TODO: CHECK THIS METHOD
+
         assert isinstance(hand, (PlayerHand, DealerHand))
+        hand.add_card(self.cards[0])
+        self.cards.pop(0)
 
     def get_cards(self):
         return self.cards

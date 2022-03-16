@@ -154,6 +154,8 @@ class DealerHand(PlayerHand):
         Makes all the cards in the hand visible
         and sorts them in ascending order.
         """
+        # TODO: CHECK
+
         self.hand_visible = True
         for i in range(len(self.cards)):
             self.cards[i].set_visible(True)
