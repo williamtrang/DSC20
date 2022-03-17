@@ -182,7 +182,9 @@ class Blackjack:
         self.deck = Deck()
         self.wallet = wallet
         Blackjack.num_games += 1
+        self.game_number = Blackjack.num_games
         self.log = ''
+        self.round = 1
     
     def play_round(self, num_rounds, stand_threshold):
         """
@@ -197,14 +199,52 @@ class Blackjack:
         # This could get pretty long!
         assert isinstance(num_rounds, int)
         assert isinstance(stand_threshold, int)
-        round = 1
-        while round <= num_rounds:
+
+        bet_amount = 5
+        counter = 0
+
+        while counter < num_rounds:
             if len(self.deck.get_cards()) < 4:
                 self.log += 'Not enough cards for a game.'
                 break
-            if self.wallet < 5: # TODO: CHANGE THIS
-                self.log += 'Wallet amount'
+            if self.wallet < bet_amount:
+                self.log += 'Wallet amount $' + str(self.wallet) + ' is less than bet amount $' + str(bet_amount) + '.'
                 break
+            
+            self.deck.shuffle(mongean = randint(0, 6), modified_overhead = randint(0, 6))
+
+            self.log += 'Round ' + str(self.round) + ' of Blackjack!\n'
+            self.log += 'wallet: ' + str(self.wallet) + '\n'
+            self.log += 'bet: ' + str(bet_amount) + '\n'
+
+            player = PlayerHand()
+            dealer = DealerHand()
+            for _ in range(2):
+                self.deck.deal_hand(player)
+                self.deck.deal_hand(dealer)
+            self.log += 'Player Cards: ' + repr(player) + '\n'
+            self.log += 'Dealer Cards: ' + repr(dealer) + '\n'
+
+            self.hit_or_stand(player, stand_threshold)
+
+            dealer.reveal_hand()
+            self.log += 'Dealer Cards Revealed: ' + repr(dealer) + '\n'
+
+            dealer_threshold = 17
+            self.hit_or_stand(dealer, dealer_threshold)
+
+            result = self.determine_winner(Blackjack.calculate_score(player), Blackjack.calculate_score(dealer))
+            if result == 1:
+                self.wallet += bet_amount
+                bet_amount += 5
+            elif result == -1:
+                self.wallet -= bet_amount
+                bet_amount -= 5
+                if bet_amount < 5:
+                    bet_amount = 5
+            self.add_to_file(player, dealer, result)(self.round)
+            self.round += 1
+            counter += 1
 
     def calculate_score(hand):
         """
@@ -242,6 +282,7 @@ class Blackjack:
         score = sum(list(map(lambda x: score_dict[x], ranks)))
         num_A = 0
 
+        # TODO: MAKE FANCIER
         if 'A' in ranks and score > 21:
             num_A = sum(list(map(lambda x: 1 if x == 'A' else 0, ranks)))
             #score = min([score - 10 for _ in range(num_A) if score > 21])
@@ -286,7 +327,7 @@ class Blackjack:
         if result == 0:
             self.log += 'Player and Dealer tie.\n'
         elif result == 1:
-            self.log += 'Player won with a score of ' + str(player_score) + '. Dealer lost with a score of ' + str(dealer_score) + '.\n'
+            self.log += 'Player won with score of ' + str(player_score) + '. Dealer lost with score of ' + str(dealer_score) + '.\n'
         elif result == -1:
             self.log += 'Player lost with a score of ' + str(player_score) + '. Dealer won with a score of ' + str(dealer_score) + '.\n'
         return result
@@ -302,7 +343,7 @@ class Blackjack:
             will stand (ie player stands if they have a score >= 
             this threshold).
         """
-        while (self.calculate_score(hand) < stand_threshold) and (len(self.deck.get_cards()) != 0):
+        while (Blackjack.calculate_score(hand) < stand_threshold) and (len(self.deck.get_cards()) != 0):
             if isinstance(hand, DealerHand):
                 self.log += 'Dealer pulled a ' + repr(self.deck.get_cards()[0]) + '\n'
             else:
@@ -323,6 +364,21 @@ class Blackjack:
         where X is the game number and it should be in `game_summaries` 
         directory.
         """
-        
         # Remember to use encoding = "utf-8" 
-        ...
+        def round_add(round):
+            winner = ''
+            with open('./game_summaries/game_summary' + str(Blackjack.num_games) + '.txt', 'a', encoding = "utf-8") as f:
+                f.write('ROUND ' + str(round) + ':\n')
+                f.write('Player Hand:\n')
+                f.write(str(player_hand))
+                f.write('\nDealer Hand:\n')
+                f.write(str(dealer_hand))
+
+                if result:
+                    winner = 'Player'
+                elif result == -1:
+                    winner = 'Dealer'
+                else:
+                    winner = 'Tied'
+                f.write('\nWinner of ROUND ' + str(round) + ': ' + winner + '\n\n')
+        return round_add
